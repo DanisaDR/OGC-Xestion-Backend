@@ -32,4 +32,6 @@ public interface IUsuarioService {
 	public void establishMonForAct(Usuario newUser);
 
 	public void changeStatusUser(Usuario usuario);
+
+	public boolean existsTfnoMbUser(Integer tfnoMb, int usuID);
 }

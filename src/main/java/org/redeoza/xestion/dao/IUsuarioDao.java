@@ -23,9 +23,6 @@ public interface IUsuarioDao extends JpaRepository<Usuario, Integer> {
 			@Param("searchUsuApe1") String searchUsuApe1, @Param("searchUsuApe2") String searchUsuApe2,
 			@Param("searchUsuEnder") String searchUsuEnder);
 
-	@Query("select u from Usuario u where u.usuTfnoFx = :usuTfnoFx")
-	public Usuario findByUserTfnoFx(@Param("usuTfnoFx") Integer usuTfnoFx);
-
 	@Query("select u from Usuario u where u.usuTfnoMb = :usuTfnoMb")
 	public Usuario findByUserTfnoMb(@Param("usuTfnoMb") Integer usuTfnoMb);
 }

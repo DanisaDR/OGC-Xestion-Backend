@@ -30,4 +30,6 @@ public interface ISocioService {
 	public Socio searchSocByTfnoMb(Integer socTfnoMb);
 
 	public int socActNoActs(boolean socAct);
+
+	public boolean existsTfnoMbSoc(Integer tfnoMb, int socID);
 }
