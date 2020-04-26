@@ -19,6 +19,7 @@ import org.redeoza.xestion.service.ILoginService;
 import org.redeoza.xestion.service.IUsuarioService;
 import org.redeoza.xestion.utils.UtilConstant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -122,10 +123,10 @@ public class UsuarioController {
 
 		final Map<String, Object> response = new HashMap<>();
 
-		Usuario newUser = new Usuario();
+		Usuario newUser;
 
 		if (result.hasErrors()) {
-			final List<String> errors = result.getFieldErrors().stream().map(err -> err.getDefaultMessage())
+			final List<String> errors = result.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
 					.collect(Collectors.toList());
 
 			throw new MissingFieldException(errors.toString());
@@ -149,7 +150,6 @@ public class UsuarioController {
 
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 		} catch (final Exception ex) {
-			ex.printStackTrace();
 			throw new GenericException(ex.getMessage());
 		}
 	}
@@ -254,7 +254,7 @@ public class UsuarioController {
 		boolean doChange = false;
 
 		if (result.hasErrors()) {
-			final List<String> errors = result.getFieldErrors().stream().map(err -> err.getDefaultMessage())
+			final List<String> errors = result.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
 					.collect(Collectors.toList());
 
 			throw new MissingFieldException(errors.toString());
@@ -271,7 +271,6 @@ public class UsuarioController {
 		try {
 			if (userUpdated.getLogin().isUsuEstado()) {
 				userUpdated.getLogin().setUsuEstado(false);
-				doChange = false;
 			} else {
 				userUpdated.getLogin().setUsuEstado(true);
 				doChange = true;
@@ -282,6 +281,21 @@ public class UsuarioController {
 			return doChange;
 
 		} catch (final Exception ex) {
+			throw new GenericException(ex.getLocalizedMessage());
+		}
+	}
+
+	@Secured({ "ROLE_ADMIN", "ROLE_DIRECTIVA" })
+	@PreAuthorize("hasPermission('hasAccess', 'TODOS_PERMISOS')")
+	@PostMapping(value = "existe-mb/{usuID}/{usuTfnoMb}")
+	public ResponseEntity<Map<String, Object>> existsPhoneMbUser(@PathVariable Integer usuTfnoMb, @PathVariable int usuID) {
+		boolean exists = usrSrv.existsTfnoMbUser(usuTfnoMb, usuID);
+
+		try {
+			final Map<String, Object> response = new HashMap<>();
+			response.put("exists", exists);
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+		} catch (Exception ex) {
 			throw new GenericException(ex.getLocalizedMessage());
 		}
 	}

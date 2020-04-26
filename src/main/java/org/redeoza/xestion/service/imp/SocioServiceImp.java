@@ -98,4 +98,9 @@ public class SocioServiceImp implements ISocioService {
 	public int socActNoActs(boolean socAct) {
 		return socDao.socActNoActs(socAct);
 	}
+
+	@Override
+	public boolean existsTfnoMbSoc(Integer tfnoMb, int socID) {
+		return socDao.findBySocTfnoMb(tfnoMb) != null && (socID == 0 || socDao.findBySocTfnoMb(tfnoMb).getSocID() != socID);
+	}
 }

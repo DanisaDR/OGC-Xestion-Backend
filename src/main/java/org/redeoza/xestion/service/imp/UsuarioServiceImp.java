@@ -3,6 +3,7 @@ package org.redeoza.xestion.service.imp;
 import java.util.Set;
 import java.util.stream.Collectors;
 
+import org.apache.commons.lang3.NotImplementedException;
 import org.redeoza.xestion.dao.IUsuarioDao;
 import org.redeoza.xestion.model.Actividade;
 import org.redeoza.xestion.model.Usuario;
@@ -111,6 +112,11 @@ public class UsuarioServiceImp implements IUsuarioService {
 	@Override
 	@Transactional
 	public void changeStatusUser(Usuario usuario) {
+		throw new NotImplementedException("Iste método ainda está sen implementar.");
+	}
 
+	@Override
+	public boolean existsTfnoMbUser(Integer tfnoMb, int usuID) {
+		return usuDao.findByUserTfnoMb(tfnoMb) != null && (usuID == 0 || usuDao.findByUserTfnoMb(tfnoMb).getUsuID() != usuID);
 	}
 }
