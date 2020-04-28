@@ -103,4 +103,9 @@ public class SocioServiceImp implements ISocioService {
 	public boolean existsTfnoMbSoc(Integer tfnoMb, int socID) {
 		return socDao.findBySocTfnoMb(tfnoMb) != null && (socID == 0 || socDao.findBySocTfnoMb(tfnoMb).getSocID() != socID);
 	}
+
+	@Override
+	public boolean existsEmailSoc(String socEmail, int socID) {
+		return socDao.findBySocEmail(socEmail) != null && (socID == 0 || socDao.findBySocEmail(socEmail).getSocID() != socID);
+	}
 }

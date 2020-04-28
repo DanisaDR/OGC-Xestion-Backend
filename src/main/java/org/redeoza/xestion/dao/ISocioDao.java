@@ -1,6 +1,7 @@
 package org.redeoza.xestion.dao;
 
 import org.redeoza.xestion.model.Socio;
+import org.redeoza.xestion.model.Usuario;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.repository.JpaRepository;
@@ -29,4 +30,7 @@ public interface ISocioDao extends JpaRepository<Socio, Integer> {
 
 	@Query("select count(s) from Socio s where s.socAct = :socAct")
 	public int socActNoActs(@Param("socAct") boolean socAct);
+
+	@Query("select s from Socio s where s.socEmail = :socEmail")
+	public Socio findBySocEmail(@Param("socEmail") String socEmail);
 }
