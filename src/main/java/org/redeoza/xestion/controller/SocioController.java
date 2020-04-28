@@ -8,6 +8,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang.StringUtils;
 import org.redeoza.xestion.exception.GenericException;
 import org.redeoza.xestion.exception.MissingFieldException;
 import org.redeoza.xestion.exception.NotFoundException;
@@ -181,6 +182,20 @@ public class SocioController {
 			final Map<String, Object> response = new HashMap<>();
 			response.put("exists", exists);
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+		} catch (Exception ex) {
+			throw new GenericException(ex.getLocalizedMessage());
+		}
+	}
+
+	@Secured({ "ROLE_ADMIN", "ROLE_DIRECTIVA" })
+	@PreAuthorize("hasPermission('hasAccess', 'TODOS_PERMISOS')")
+	@PostMapping(value = "existe-email/{socID}/{socEmail}")
+	public boolean existsEmailSoc(@PathVariable(required = false) String socEmail, @PathVariable int socID) {
+		if(socEmail == null) {
+			socEmail = StringUtils.EMPTY;
+		}
+		try {
+			return socSrv.existsEmailSoc(socEmail, socID);
 		} catch (Exception ex) {
 			throw new GenericException(ex.getLocalizedMessage());
 		}

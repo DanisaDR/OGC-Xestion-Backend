@@ -9,6 +9,7 @@ import java.util.stream.Collectors;
 
 import javax.validation.Valid;
 
+import org.apache.commons.lang.StringUtils;
 import org.redeoza.xestion.exception.GenericException;
 import org.redeoza.xestion.exception.MissingFieldException;
 import org.redeoza.xestion.exception.NotFoundException;
@@ -288,13 +289,12 @@ public class UsuarioController {
 	@Secured({ "ROLE_ADMIN", "ROLE_DIRECTIVA" })
 	@PreAuthorize("hasPermission('hasAccess', 'TODOS_PERMISOS')")
 	@PostMapping(value = "existe-mb/{usuID}/{usuTfnoMb}")
-	public ResponseEntity<Map<String, Object>> existsPhoneMbUser(@PathVariable Integer usuTfnoMb, @PathVariable int usuID) {
-		boolean exists = usrSrv.existsTfnoMbUser(usuTfnoMb, usuID);
-
+	public boolean existsPhoneMbUser(@PathVariable(required = false) Integer usuTfnoMb, @PathVariable int usuID) {
+		if(usuTfnoMb == null) {
+			usuTfnoMb = 0;
+		}
 		try {
-			final Map<String, Object> response = new HashMap<>();
-			response.put("exists", exists);
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+			return usrSrv.existsTfnoMbUser(usuTfnoMb, usuID);
 		} catch (Exception ex) {
 			throw new GenericException(ex.getLocalizedMessage());
 		}

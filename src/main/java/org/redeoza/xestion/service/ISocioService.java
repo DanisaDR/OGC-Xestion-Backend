@@ -32,4 +32,6 @@ public interface ISocioService {
 	public int socActNoActs(boolean socAct);
 
 	public boolean existsTfnoMbSoc(Integer tfnoMb, int socID);
+
+	public boolean existsEmailSoc(String socEmail, int socID);
 }
