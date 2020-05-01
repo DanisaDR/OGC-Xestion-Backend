@@ -6,6 +6,7 @@ import java.util.stream.Collectors;
 import org.redeoza.xestion.dao.ISocioDao;
 import org.redeoza.xestion.model.Socio;
 import org.redeoza.xestion.service.ISocioService;
+import org.redeoza.xestion.utils.SeparateTransientField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -23,7 +24,10 @@ import org.springframework.transaction.annotation.Transactional;
 public class SocioServiceImp implements ISocioService {
 
 	@Autowired
-	private ISocioDao socDao;
+	ISocioDao socDao;
+
+	@Autowired
+	SeparateTransientField separate;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -34,7 +38,14 @@ public class SocioServiceImp implements ISocioService {
 	@Override
 	@Transactional(readOnly = true)
 	public Socio getSocioById(Integer socID) {
-		return socDao.findById(socID).orElse(null);
+
+		Socio showSoc = socDao.findById(socID).orElse(null);
+
+		if(showSoc != null) {
+			separate.separateSocNomComp(showSoc);
+		}
+
+		return showSoc;
 	}
 
 	@Override

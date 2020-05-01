@@ -16,6 +16,7 @@ import org.redeoza.xestion.model.Socio;
 import org.redeoza.xestion.service.ISocioService;
 import org.redeoza.xestion.utils.UtilConstant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -140,7 +141,7 @@ public class SocioController {
 		final Map<String, Object> response = new HashMap<>();
 
 		if (result.hasErrors()) {
-			final List<String> errors = result.getFieldErrors().stream().map(err -> err.getDefaultMessage())
+			final List<String> errors = result.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
 					.collect(Collectors.toList());
 
 			throw new MissingFieldException(errors.toString());
@@ -189,7 +190,7 @@ public class SocioController {
 
 	@Secured({ "ROLE_ADMIN", "ROLE_DIRECTIVA" })
 	@PreAuthorize("hasPermission('hasAccess', 'TODOS_PERMISOS')")
-	@PostMapping(value = "existe-email/{socID}/{socEmail}")
+	@PostMapping(value = {"existe-email/{socID}/{socEmail}", "existe-email/{socID}"})
 	public boolean existsEmailSoc(@PathVariable(required = false) String socEmail, @PathVariable int socID) {
 		if(socEmail == null) {
 			socEmail = StringUtils.EMPTY;

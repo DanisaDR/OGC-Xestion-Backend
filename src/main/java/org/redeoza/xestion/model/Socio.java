@@ -82,13 +82,13 @@ public class Socio implements Serializable {
 	@Min(880000000)
 	@Max(989999999)
 	@Column(name = "soc_tfno_fx")
-	private int socTfnoFx;
+	private String socTfnoFx;
 
 	@NotNull
 	@Min(600000000)
 	@Max(699999999)
 	@Column(name = "soc_tfno_mb")
-	private int socTfnoMb;
+	private String socTfnoMb;
 
 	@NotNull
 	@Column(name = "soc_act")
@@ -315,9 +315,9 @@ public class Socio implements Serializable {
 	 * </p>
 	 * <b>obtener socTfnoFx</b>
 	 * 
-	 * @return int socTfnoFx
+	 * @return String socTfnoFx
 	 */
-	public int getSocTfnoFx() {
+	public String getSocTfnoFx() {
 		return this.socTfnoFx;
 	}
 
@@ -326,10 +326,10 @@ public class Socio implements Serializable {
 	 * SET: <b>Establece socTfnoFx</b>
 	 * </p>
 	 * 
-	 * @param int
+	 * @param String
 	 *            socTfnoFx
 	 */
-	public void setSocTfnoFx(int socTfnoFx) {
+	public void setSocTfnoFx(String socTfnoFx) {
 		this.socTfnoFx = socTfnoFx;
 	}
 
@@ -341,7 +341,7 @@ public class Socio implements Serializable {
 	 * 
 	 * @return int socTfnoMb
 	 */
-	public int getSocTfnoMb() {
+	public String getSocTfnoMb() {
 		return this.socTfnoMb;
 	}
 
@@ -350,10 +350,10 @@ public class Socio implements Serializable {
 	 * SET: <b>Establece socTfnoMb</b>
 	 * </p>
 	 * 
-	 * @param int
+	 * @param String
 	 *            socTfnoMb
 	 */
-	public void setSocTfnoMb(int socTfnoMb) {
+	public void setSocTfnoMb(String socTfnoMb) {
 		this.socTfnoMb = socTfnoMb;
 	}
 
