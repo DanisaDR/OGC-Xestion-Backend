@@ -8,17 +8,11 @@ import org.springframework.security.access.PermissionEvaluator;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
-/**
- * <b>CustomPermissionEvaluator.java<b>
- * 
- * @author Daniel Isasi
- * @since 17 ene. 2020
- */
 @Component
 public class CustomPermissionEvaluator implements PermissionEvaluator {
 
 	@Autowired
-	private IPermisoService permServ;
+	IPermisoService permServ;
 
 	@Override
 	public boolean hasPermission(Authentication authentication, Object accessType, Object permission) {
@@ -33,17 +27,8 @@ public class CustomPermissionEvaluator implements PermissionEvaluator {
 		return false;
 	}
 
-	/**
-	 * <b>validateAccess</b>
-	 * <p>
-	 * Creado: 17 ene. 2020
-	 * <p>
-	 * 
-	 * @param valueOf
-	 * @return
-	 */
 	private boolean validateAccess(String permission) {
-		return permServ.getPermissionByName(permission) != null ? true : false;
+		return permServ.getPermissionByName(permission) != null;
 	}
 
 	@Override

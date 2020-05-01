@@ -29,12 +29,6 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * <b>RolController.java<b>
- * 
- * @author Daniel Isasi
- * @since 15 ene. 2020
- */
 @RestController
 @RequestMapping(value = "roles")
 @CrossOrigin(origins = "*")

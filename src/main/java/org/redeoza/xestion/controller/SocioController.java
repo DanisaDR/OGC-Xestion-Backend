@@ -33,12 +33,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * <b>SocioController.java<b>
- * 
- * @author Daniel Isasi
- * @since 16 ene. 2020
- */
 @RestController
 @RequestMapping(value = "socios")
 @CrossOrigin(origins = "*")

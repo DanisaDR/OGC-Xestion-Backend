@@ -1,5 +1,6 @@
 package org.redeoza.xestion.service.imp;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -16,12 +17,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * <b>UserDataServiceImp.java<b>
- * 
- * @author Daniel Isasi
- * @since 12 ene. 2020
- */
 @Service
 public class UsuarioServiceImp implements IUsuarioService {
 
@@ -34,7 +29,7 @@ public class UsuarioServiceImp implements IUsuarioService {
 	@Override
 	@Transactional(readOnly = true)
 	public Set<Usuario> getAllUsers() {
-		return usuDao.findAll().stream().collect(Collectors.toSet());
+		return new HashSet<>(usuDao.findAll());
 	}
 
 	@Override

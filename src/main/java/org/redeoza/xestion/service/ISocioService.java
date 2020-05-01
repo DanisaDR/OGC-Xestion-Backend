@@ -5,33 +5,27 @@ import java.util.Set;
 import org.redeoza.xestion.model.Socio;
 import org.springframework.data.domain.Page;
 
-/**
- * <b>ISocioService.java<b>
- * 
- * @author Daniel Isasi
- * @since 16 ene. 2020
- */
 public interface ISocioService {
 
-	public Set<Socio> getAllSocios();
+	Set<Socio> getAllSocios();
 
-	public Socio getSocioById(Integer socio);
+	Socio getSocioById(Integer socio);
 
-	public Page<Socio> searchAndPagination(int page, int size, String order, boolean ordenationType,
+	Page<Socio> searchAndPagination(int page, int size, String order, boolean ordenationType,
 			String searchSocNomComp, String searchSocEnder, Integer searchSocTfnoFx, Integer searchSocTfnoMb,
 			String searchSocEmail);
 
-	public Socio saveSoc(Socio socio);
+	Socio saveSoc(Socio socio);
 
-	public void deleteSoc(Socio socio);
+	void deleteSoc(Socio socio);
 
-	public Socio searchSocByTfnoFx(Integer socTfnoFx);
+	Socio searchSocByTfnoFx(Integer socTfnoFx);
 
-	public Socio searchSocByTfnoMb(Integer socTfnoMb);
+	Socio searchSocByTfnoMb(Integer socTfnoMb);
 
-	public int socActNoActs(boolean socAct);
+	int socActNoActs(boolean socAct);
 
-	public boolean existsTfnoMbSoc(Integer tfnoMb, int socID);
+	boolean existsTfnoMbSoc(Integer tfnoMb, int socID);
 
-	public boolean existsEmailSoc(String socEmail, int socID);
+	boolean existsEmailSoc(String socEmail, int socID);
 }

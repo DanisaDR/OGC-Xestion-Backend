@@ -15,12 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * <b>InicioController.java<b>
- * 
- * @author Daniel Isasi
- * @since 25 ene. 2020
- */
 @RestController
 @CrossOrigin(origins = "*")
 public class InicioController {

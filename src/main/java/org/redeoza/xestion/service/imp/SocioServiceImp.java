@@ -1,5 +1,6 @@
 package org.redeoza.xestion.service.imp;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,12 +15,6 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * <b>SocioServiceImp.java<b>
- * 
- * @author Daniel Isasi
- * @since 16 ene. 2020
- */
 @Service
 public class SocioServiceImp implements ISocioService {
 
@@ -32,7 +27,7 @@ public class SocioServiceImp implements ISocioService {
 	@Override
 	@Transactional(readOnly = true)
 	public Set<Socio> getAllSocios() {
-		return socDao.findAll().stream().collect(Collectors.toSet());
+		return new HashSet<>(socDao.findAll());
 	}
 
 	@Override

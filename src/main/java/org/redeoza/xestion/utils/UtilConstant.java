@@ -1,11 +1,5 @@
 package org.redeoza.xestion.utils;
 
-/**
- * <b>UtilConstant.java<b>
- * 
- * @author Daniel Isasi
- * @since 13 ene. 2020
- */
 public class UtilConstant {
 
 	// Mensaxes LOGGER de excepcións.

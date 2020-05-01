@@ -15,6 +15,7 @@ import org.redeoza.xestion.model.Actividade;
 import org.redeoza.xestion.service.IActividadeService;
 import org.redeoza.xestion.utils.UtilConstant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,19 +33,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * <b>ActividadeController.java<b>
- * 
- * @author Daniel Isasi
- * @since 16 ene. 2020
- */
 @RestController
 @RequestMapping(value = "actividades")
 @CrossOrigin(origins = "*")
 public class ActividadeController {
 
 	@Autowired
-	private IActividadeService actSrv;
+	IActividadeService actSrv;
 
 	@Secured({ "ROLE_ADMIN", "ROLE_DIRECTIVA", "ROLE_MONITOR" })
 	@GetMapping(value = "listado")
@@ -105,7 +100,7 @@ public class ActividadeController {
 		final Map<String, Object> response = new HashMap<>();
 
 		if (result.hasErrors()) {
-			final List<String> errors = result.getFieldErrors().stream().map(err -> err.getDefaultMessage())
+			final List<String> errors = result.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
 					.collect(Collectors.toList());
 
 			throw new MissingFieldException(errors.toString());
@@ -120,7 +115,6 @@ public class ActividadeController {
 
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 		} catch (final Exception ex) {
-			ex.printStackTrace();
 			throw new GenericException(ex.getMessage());
 		}
 	}
@@ -138,7 +132,7 @@ public class ActividadeController {
 		final Map<String, Object> response = new HashMap<>();
 
 		if (result.hasErrors()) {
-			final List<String> errors = result.getFieldErrors().stream().map(err -> err.getDefaultMessage())
+			final List<String> errors = result.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
 					.collect(Collectors.toList());
 
 			throw new MissingFieldException(errors.toString());

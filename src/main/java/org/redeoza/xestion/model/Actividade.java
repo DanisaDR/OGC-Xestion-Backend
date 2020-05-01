@@ -81,194 +81,66 @@ public class Actividade implements Serializable {
 	@Cascade({ CascadeType.SAVE_UPDATE })
 	private Usuario usuario;
 
-	/**
-	 * <p>
-	 * GET:
-	 * </p>
-	 * <b>obtener actID</b>
-	 * 
-	 * @return int actID
-	 */
 	public int getActID() {
 		return this.actID;
 	}
 
-	/**
-	 * <p>
-	 * SET: <b>Establece actID</b>
-	 * </p>
-	 * 
-	 * @param int
-	 *            actID
-	 */
 	public void setActID(int actID) {
 		this.actID = actID;
 	}
 
-	/**
-	 * <p>
-	 * GET:
-	 * </p>
-	 * <b>obtener actNom</b>
-	 * 
-	 * @return String actNom
-	 */
 	public String getActNom() {
 		return this.actNom;
 	}
 
-	/**
-	 * <p>
-	 * SET: <b>Establece actNom</b>
-	 * </p>
-	 * 
-	 * @param String
-	 *            actNom
-	 */
 	public void setActNom(String actNom) {
 		this.actNom = actNom;
 	}
 
-	/**
-	 * <p>
-	 * GET:
-	 * </p>
-	 * <b>obtener actDescr</b>
-	 * 
-	 * @return String actDescr
-	 */
 	public String getActDescr() {
 		return this.actDescr;
 	}
 
-	/**
-	 * <p>
-	 * SET: <b>Establece actDescr</b>
-	 * </p>
-	 * 
-	 * @param String
-	 *            actDescr
-	 */
 	public void setActDescr(String actDescr) {
 		this.actDescr = actDescr;
 	}
 
-	/**
-	 * <p>
-	 * GET:
-	 * </p>
-	 * <b>obtener actAport</b>
-	 * 
-	 * @return int actAport
-	 */
 	public int getActAport() {
 		return this.actAport;
 	}
 
-	/**
-	 * <p>
-	 * SET: <b>Establece actAport</b>
-	 * </p>
-	 * 
-	 * @param int
-	 *            actAport
-	 */
 	public void setActAport(int actAport) {
 		this.actAport = actAport;
 	}
 
-	/**
-	 * <p>
-	 * GET:
-	 * </p>
-	 * <b>obtener actDataComezo</b>
-	 * 
-	 * @return Date actDataComezo
-	 */
 	public Date getActDataComezo() {
 		return this.actDataComezo;
 	}
 
-	/**
-	 * <p>
-	 * SET: <b>Establece actDataComezo</b>
-	 * </p>
-	 * 
-	 * @param Date
-	 *            actDataComezo
-	 */
 	public void setActDataComezo(Date actDataComezo) {
 		this.actDataComezo = actDataComezo;
 	}
 
-	/**
-	 * <p>
-	 * GET:
-	 * </p>
-	 * <b>obtener actDataRemate</b>
-	 * 
-	 * @return Date actDataRemate
-	 */
 	public Date getActDataRemate() {
 		return this.actDataRemate;
 	}
 
-	/**
-	 * <p>
-	 * SET: <b>Establece actDataRemate</b>
-	 * </p>
-	 * 
-	 * @param Date
-	 *            actDataRemate
-	 */
 	public void setActDataRemate(Date actDataRemate) {
 		this.actDataRemate = actDataRemate;
 	}
 
-	/**
-	 * <p>
-	 * GET:
-	 * </p>
-	 * <b>obtener socios</b>
-	 * 
-	 * @return Set<Socio> socios
-	 */
 	public Set<Socio> getSocios() {
 		return this.socios;
 	}
 
-	/**
-	 * <p>
-	 * SET: <b>Establece socios</b>
-	 * </p>
-	 * 
-	 * @param Set<Socio>
-	 *            socios
-	 */
 	public void setSocios(Set<Socio> socios) {
 		this.socios = socios;
 	}
 
-	/**
-	 * <p>
-	 * GET:
-	 * </p>
-	 * <b>obtener usuario</b>
-	 * 
-	 * @return Usuario usuario
-	 */
 	public Usuario getUsuario() {
 		return this.usuario;
 	}
 
-	/**
-	 * <p>
-	 * SET: <b>Establece usuario</b>
-	 * </p>
-	 * 
-	 * @param Usuario
-	 *            usuario
-	 */
 	public void setUsuario(Usuario usuario) {
 		this.usuario = usuario;
 	}

@@ -40,12 +40,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * <b>UserDataController.java<b>
- * 
- * @author Daniel Isasi
- * @since 12 ene. 2020
- */
 @RestController
 @RequestMapping(value = "usuarios")
 @CrossOrigin(origins = "*")

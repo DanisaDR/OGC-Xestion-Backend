@@ -6,12 +6,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-/**
- * <b>IPermisionDao.java<b>
- * 
- * @author Daniel Isasi
- * @since 17 ene. 2020
- */
 @Repository
 public interface IPermisoDao extends JpaRepository<Permiso, Integer> {
 

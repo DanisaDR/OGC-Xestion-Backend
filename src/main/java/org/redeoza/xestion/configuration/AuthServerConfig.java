@@ -27,22 +27,16 @@ import org.springframework.security.oauth2.provider.token.TokenStore;
 import org.springframework.security.oauth2.provider.token.store.JwtAccessTokenConverter;
 import org.springframework.security.oauth2.provider.token.store.JwtTokenStore;
 
-/**
- * <b>OAuth2AuthorizationServerConfig.java<b>
- * 
- * @author Daniel Isasi
- * @since 12 ene. 2020
- */
 @Configuration
 @EnableAuthorizationServer
 public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 
 	@Autowired
 	@Qualifier("authenticationManager")
-	private AuthenticationManager authenticationManager;
+	AuthenticationManager authenticationManager;
 
 	@Autowired
-	private BCryptPasswordEncoder passwordEncoder;
+	BCryptPasswordEncoder passwordEncoder;
 
 	@Override
 	public void configure(AuthorizationServerSecurityConfigurer security) throws Exception {
@@ -71,14 +65,6 @@ public class AuthServerConfig extends AuthorizationServerConfigurerAdapter {
 				.exceptionTranslator(loggingExceptionTranslator());
 	}
 
-	/**
-	 * <b>customTokenEnhancer</b>
-	 * <p>
-	 * Creado: 25 ene. 2020
-	 * <p>
-	 * 
-	 * @return
-	 */
 	@Bean
 	public TokenEnhancer tokenEnhancer() {
 		return new CustomTokenEnhancer();
