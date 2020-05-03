@@ -12,20 +12,18 @@ public interface ISocioService {
 	Socio getSocioById(Integer socio);
 
 	Page<Socio> searchAndPagination(int page, int size, String order, boolean ordenationType,
-			String searchSocNomComp, String searchSocEnder, Integer searchSocTfnoFx, Integer searchSocTfnoMb,
+			String searchSocNomComp, String searchSocEnder, String searchSocTfnoFx, String searchSocTfnoMb,
 			String searchSocEmail);
 
-	Socio saveSoc(Socio socio);
+	void saveSoc(Socio socio);
 
 	void deleteSoc(Socio socio);
 
-	Socio searchSocByTfnoFx(Integer socTfnoFx);
-
-	Socio searchSocByTfnoMb(Integer socTfnoMb);
+	Socio searchSocByTfnoMb(String socTfnoMb);
 
 	int socActNoActs(boolean socAct);
 
-	boolean existsTfnoMbSoc(Integer tfnoMb, int socID);
+	boolean existsTfnoMbSoc(String tfnoMb, int socID);
 
 	boolean existsEmailSoc(String socEmail, int socID);
 }

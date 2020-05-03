@@ -2,7 +2,6 @@ package org.redeoza.xestion.service.imp;
 
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.redeoza.xestion.dao.ISocioDao;
 import org.redeoza.xestion.model.Socio;
@@ -46,7 +45,7 @@ public class SocioServiceImp implements ISocioService {
 	@Override
 	@Transactional(readOnly = true)
 	public Page<Socio> searchAndPagination(int page, int size, String order, boolean ordenationType,
-			String searchSocNomComp, String searchSocEnder, Integer searchSocTfnoFx, Integer searchSocTfnoMb,
+			String searchSocNomComp, String searchSocEnder, String searchSocTfnoFx, String searchSocTfnoMb,
 			String searchSocEmail) {
 
 		PageRequest pageable = null;
@@ -59,26 +58,18 @@ public class SocioServiceImp implements ISocioService {
 
 		Page<Socio> searchPage = null;
 
-		final Socio tfnoFx = searchSocByTfnoFx(searchSocTfnoFx);
-		final Socio tfnoMb = searchSocByTfnoMb(searchSocTfnoMb);
-
-		if ((tfnoFx != null) && (tfnoMb == null)) {
-			searchPage = socDao.searchAndPaginationSoc(pageable, tfnoFx.getSocNomComp(), tfnoFx.getSocEnder(),
-					tfnoFx.getSocEmail());
-		} else if ((tfnoMb != null) && (tfnoFx == null)) {
-			searchPage = socDao.searchAndPaginationSoc(pageable, tfnoMb.getSocNomComp(), tfnoMb.getSocEnder(),
-					tfnoMb.getSocEmail());
-		} else {
-			searchPage = socDao.searchAndPaginationSoc(pageable, searchSocNomComp, searchSocEnder, searchSocEmail);
-		}
+		searchPage = socDao.searchAndPaginationSoc(
+				pageable, searchSocNomComp, searchSocEnder,
+				searchSocEmail, searchSocTfnoFx, searchSocTfnoMb
+		);
 
 		return searchPage;
 	}
 
 	@Override
 	@Transactional
-	public Socio saveSoc(Socio socio) {
-		return socDao.save(socio);
+	public void saveSoc(Socio socio) {
+		socDao.save(socio);
 	}
 
 	@Override
@@ -89,13 +80,7 @@ public class SocioServiceImp implements ISocioService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Socio searchSocByTfnoFx(Integer socTfnoFx) {
-		return socDao.findBySocTfnoFx(socTfnoFx);
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public Socio searchSocByTfnoMb(Integer socTfnoMb) {
+	public Socio searchSocByTfnoMb(String socTfnoMb) {
 		return socDao.findBySocTfnoMb(socTfnoMb);
 	}
 
@@ -106,7 +91,7 @@ public class SocioServiceImp implements ISocioService {
 	}
 
 	@Override
-	public boolean existsTfnoMbSoc(Integer tfnoMb, int socID) {
+	public boolean existsTfnoMbSoc(String tfnoMb, int socID) {
 		return socDao.findBySocTfnoMb(tfnoMb) != null && (socID == 0 || socDao.findBySocTfnoMb(tfnoMb).getSocID() != socID);
 	}
 

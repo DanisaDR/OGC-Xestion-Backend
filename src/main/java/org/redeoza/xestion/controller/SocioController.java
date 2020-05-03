@@ -59,8 +59,8 @@ public class SocioController {
 	public ResponseEntity<Page<Socio>> findByParam(
 			@RequestParam(value = "searchSocNomComp", required = false) String searchSocNomComp,
 			@RequestParam(value = "searchSocEnder", required = false) String searchSocEnder,
-			@RequestParam(value = "searchSocTfnoFx", required = false) Integer searchSocTfnoFx,
-			@RequestParam(value = "searchSocTfnoMb", required = false) Integer searchSocTfnoMb,
+			@RequestParam(value = "searchSocTfnoFx", required = false) String searchSocTfnoFx,
+			@RequestParam(value = "searchSocTfnoMb", required = false) String searchSocTfnoMb,
 			@RequestParam(value = "searchSocEmail", required = false) String searchSocEmail,
 			@RequestParam(value = "order", required = false, defaultValue = "socID") String order,
 			@RequestParam(defaultValue = "true") boolean ordenationType,
@@ -170,7 +170,7 @@ public class SocioController {
 	@Secured({ "ROLE_ADMIN", "ROLE_DIRECTIVA" })
 	@PreAuthorize("hasPermission('hasAccess', 'TODOS_PERMISOS')")
 	@PostMapping(value = "existe-mb/{socID}/{socTfnoMb}")
-	public ResponseEntity<Map<String, Object>> existsPhoneMbUser(@PathVariable Integer socTfnoMb, @PathVariable int socID) {
+	public ResponseEntity<Map<String, Object>> existsPhoneMbUser(@PathVariable String socTfnoMb, @PathVariable int socID) {
 		boolean exists = socSrv.existsTfnoMbSoc(socTfnoMb, socID);
 
 		try {
