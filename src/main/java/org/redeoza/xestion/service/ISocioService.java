@@ -15,7 +15,7 @@ public interface ISocioService {
 			String searchSocNomComp, String searchSocEnder, String searchSocTfnoFx, String searchSocTfnoMb,
 			String searchSocEmail);
 
-	void saveSoc(Socio socio);
+	Socio saveSoc(Socio socio);
 
 	void deleteSoc(Socio socio);
 

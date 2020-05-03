@@ -73,15 +73,9 @@ public class Socio implements Serializable {
 	@Column(name = "soc_cp")
 	private int socCP;
 
-	@NotNull
-	@Min(880000000)
-	@Max(989999999)
 	@Column(name = "soc_tfno_fx")
 	private String socTfnoFx;
 
-	@NotNull
-	@Min(600000000)
-	@Max(699999999)
 	@Column(name = "soc_tfno_mb")
 	private String socTfnoMb;
 

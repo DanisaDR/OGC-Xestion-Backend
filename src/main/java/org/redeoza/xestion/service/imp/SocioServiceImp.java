@@ -68,8 +68,8 @@ public class SocioServiceImp implements ISocioService {
 
 	@Override
 	@Transactional
-	public void saveSoc(Socio socio) {
-		socDao.save(socio);
+	public Socio saveSoc(Socio socio) {
+		return socDao.save(socio);
 	}
 
 	@Override

@@ -141,6 +141,10 @@ public class SocioController {
 			throw new MissingFieldException(errors.toString());
 		}
 
+		if (socio.getSocTfnoFx().equals(StringUtils.EMPTY) && socio.getSocTfnoMb().equals(StringUtils.EMPTY)) {
+			throw new MissingFieldException(UtilConstant.ALMOST_ONE_PHONE);
+		}
+
 		if (socUpdated == null) {
 			throw new MissingFieldException(UtilConstant.NOT_FOUND_SOCIO);
 		}
@@ -158,7 +162,12 @@ public class SocioController {
 			socUpdated.setCotas(socio.getCotas());
 			socUpdated.setActividades(socio.getActividades());
 
-			response.put(UtilConstant.MESSAGE, UtilConstant.UPDATED_SOCIO.concat(socUpdated.getSocNomComp()));
+			socSrv.saveSoc(socUpdated);
+
+			response.put(UtilConstant.MESSAGE, UtilConstant.UPDATED_SOCIO
+					.concat(String.valueOf(socUpdated.getSocID()))
+					.concat(UtilConstant.COMPLETE_NAME_SOCIO)
+					.concat(socUpdated.getSocNomComp()));
 
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 
@@ -186,9 +195,6 @@ public class SocioController {
 	@PreAuthorize("hasPermission('hasAccess', 'TODOS_PERMISOS')")
 	@PostMapping(value = {"existe-email/{socID}/{socEmail}", "existe-email/{socID}"})
 	public boolean existsEmailSoc(@PathVariable(required = false) String socEmail, @PathVariable int socID) {
-		if(socEmail == null) {
-			socEmail = StringUtils.EMPTY;
-		}
 		try {
 			return socSrv.existsEmailSoc(socEmail, socID);
 		} catch (Exception ex) {
