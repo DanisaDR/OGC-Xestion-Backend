@@ -1,5 +1,6 @@
 package org.redeoza.xestion.service.imp;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -14,25 +15,19 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * <b>ActividadeServiceImp.java<b>
- * 
- * @author Daniel Isasi
- * @since 16 ene. 2020
- */
 @Service
 public class ActividadeServiceImp implements IActividadeService {
 
 	@Autowired
-	private IActividadeDao actDao;
+	IActividadeDao actDao;
 
 	@Autowired
-	private ISocioService socSrv;
+	ISocioService socSrv;
 
 	@Override
 	@Transactional(readOnly = true)
 	public Set<Actividade> getAllActividades() {
-		return actDao.findAll().stream().collect(Collectors.toSet());
+		return new HashSet<>(actDao.findAll());
 	}
 
 	@Override

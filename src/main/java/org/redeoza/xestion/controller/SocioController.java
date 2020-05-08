@@ -16,6 +16,7 @@ import org.redeoza.xestion.model.Socio;
 import org.redeoza.xestion.service.ISocioService;
 import org.redeoza.xestion.utils.UtilConstant;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.DefaultMessageSourceResolvable;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -32,12 +33,6 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * <b>SocioController.java<b>
- * 
- * @author Daniel Isasi
- * @since 16 ene. 2020
- */
 @RestController
 @RequestMapping(value = "socios")
 @CrossOrigin(origins = "*")
@@ -64,8 +59,8 @@ public class SocioController {
 	public ResponseEntity<Page<Socio>> findByParam(
 			@RequestParam(value = "searchSocNomComp", required = false) String searchSocNomComp,
 			@RequestParam(value = "searchSocEnder", required = false) String searchSocEnder,
-			@RequestParam(value = "searchSocTfnoFx", required = false) Integer searchSocTfnoFx,
-			@RequestParam(value = "searchSocTfnoMb", required = false) Integer searchSocTfnoMb,
+			@RequestParam(value = "searchSocTfnoFx", required = false) String searchSocTfnoFx,
+			@RequestParam(value = "searchSocTfnoMb", required = false) String searchSocTfnoMb,
 			@RequestParam(value = "searchSocEmail", required = false) String searchSocEmail,
 			@RequestParam(value = "order", required = false, defaultValue = "socID") String order,
 			@RequestParam(defaultValue = "true") boolean ordenationType,
@@ -140,10 +135,14 @@ public class SocioController {
 		final Map<String, Object> response = new HashMap<>();
 
 		if (result.hasErrors()) {
-			final List<String> errors = result.getFieldErrors().stream().map(err -> err.getDefaultMessage())
+			final List<String> errors = result.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
 					.collect(Collectors.toList());
 
 			throw new MissingFieldException(errors.toString());
+		}
+
+		if (socio.getSocTfnoFx().equals(StringUtils.EMPTY) && socio.getSocTfnoMb().equals(StringUtils.EMPTY)) {
+			throw new MissingFieldException(UtilConstant.ALMOST_ONE_PHONE);
 		}
 
 		if (socUpdated == null) {
@@ -163,7 +162,12 @@ public class SocioController {
 			socUpdated.setCotas(socio.getCotas());
 			socUpdated.setActividades(socio.getActividades());
 
-			response.put(UtilConstant.MESSAGE, UtilConstant.UPDATED_SOCIO.concat(socUpdated.getSocNomComp()));
+			socSrv.saveSoc(socUpdated);
+
+			response.put(UtilConstant.MESSAGE, UtilConstant.UPDATED_SOCIO
+					.concat(String.valueOf(socUpdated.getSocID()))
+					.concat(UtilConstant.COMPLETE_NAME_SOCIO)
+					.concat(socUpdated.getSocNomComp()));
 
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 
@@ -175,7 +179,7 @@ public class SocioController {
 	@Secured({ "ROLE_ADMIN", "ROLE_DIRECTIVA" })
 	@PreAuthorize("hasPermission('hasAccess', 'TODOS_PERMISOS')")
 	@PostMapping(value = "existe-mb/{socID}/{socTfnoMb}")
-	public ResponseEntity<Map<String, Object>> existsPhoneMbUser(@PathVariable Integer socTfnoMb, @PathVariable int socID) {
+	public ResponseEntity<Map<String, Object>> existsPhoneMbUser(@PathVariable String socTfnoMb, @PathVariable int socID) {
 		boolean exists = socSrv.existsTfnoMbSoc(socTfnoMb, socID);
 
 		try {
@@ -189,11 +193,8 @@ public class SocioController {
 
 	@Secured({ "ROLE_ADMIN", "ROLE_DIRECTIVA" })
 	@PreAuthorize("hasPermission('hasAccess', 'TODOS_PERMISOS')")
-	@PostMapping(value = "existe-email/{socID}/{socEmail}")
+	@PostMapping(value = {"existe-email/{socID}/{socEmail}", "existe-email/{socID}"})
 	public boolean existsEmailSoc(@PathVariable(required = false) String socEmail, @PathVariable int socID) {
-		if(socEmail == null) {
-			socEmail = StringUtils.EMPTY;
-		}
 		try {
 			return socSrv.existsEmailSoc(socEmail, socID);
 		} catch (Exception ex) {

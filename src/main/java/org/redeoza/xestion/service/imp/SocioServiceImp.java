@@ -1,11 +1,12 @@
 package org.redeoza.xestion.service.imp;
 
+import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.redeoza.xestion.dao.ISocioDao;
 import org.redeoza.xestion.model.Socio;
 import org.redeoza.xestion.service.ISocioService;
+import org.redeoza.xestion.utils.SeparateTransientField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -13,34 +14,38 @@ import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * <b>SocioServiceImp.java<b>
- * 
- * @author Daniel Isasi
- * @since 16 ene. 2020
- */
 @Service
 public class SocioServiceImp implements ISocioService {
 
 	@Autowired
-	private ISocioDao socDao;
+	ISocioDao socDao;
+
+	@Autowired
+	SeparateTransientField separate;
 
 	@Override
 	@Transactional(readOnly = true)
 	public Set<Socio> getAllSocios() {
-		return socDao.findAll().stream().collect(Collectors.toSet());
+		return new HashSet<>(socDao.findAll());
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Socio getSocioById(Integer socID) {
-		return socDao.findById(socID).orElse(null);
+
+		Socio showSoc = socDao.findById(socID).orElse(null);
+
+		if(showSoc != null) {
+			separate.separateSocNomComp(showSoc);
+		}
+
+		return showSoc;
 	}
 
 	@Override
 	@Transactional(readOnly = true)
 	public Page<Socio> searchAndPagination(int page, int size, String order, boolean ordenationType,
-			String searchSocNomComp, String searchSocEnder, Integer searchSocTfnoFx, Integer searchSocTfnoMb,
+			String searchSocNomComp, String searchSocEnder, String searchSocTfnoFx, String searchSocTfnoMb,
 			String searchSocEmail) {
 
 		PageRequest pageable = null;
@@ -53,18 +58,10 @@ public class SocioServiceImp implements ISocioService {
 
 		Page<Socio> searchPage = null;
 
-		final Socio tfnoFx = searchSocByTfnoFx(searchSocTfnoFx);
-		final Socio tfnoMb = searchSocByTfnoMb(searchSocTfnoMb);
-
-		if ((tfnoFx != null) && (tfnoMb == null)) {
-			searchPage = socDao.searchAndPaginationSoc(pageable, tfnoFx.getSocNomComp(), tfnoFx.getSocEnder(),
-					tfnoFx.getSocEmail());
-		} else if ((tfnoMb != null) && (tfnoFx == null)) {
-			searchPage = socDao.searchAndPaginationSoc(pageable, tfnoMb.getSocNomComp(), tfnoMb.getSocEnder(),
-					tfnoMb.getSocEmail());
-		} else {
-			searchPage = socDao.searchAndPaginationSoc(pageable, searchSocNomComp, searchSocEnder, searchSocEmail);
-		}
+		searchPage = socDao.searchAndPaginationSoc(
+				pageable, searchSocNomComp, searchSocEnder,
+				searchSocEmail, searchSocTfnoFx, searchSocTfnoMb
+		);
 
 		return searchPage;
 	}
@@ -83,13 +80,7 @@ public class SocioServiceImp implements ISocioService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Socio searchSocByTfnoFx(Integer socTfnoFx) {
-		return socDao.findBySocTfnoFx(socTfnoFx);
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public Socio searchSocByTfnoMb(Integer socTfnoMb) {
+	public Socio searchSocByTfnoMb(String socTfnoMb) {
 		return socDao.findBySocTfnoMb(socTfnoMb);
 	}
 
@@ -100,7 +91,7 @@ public class SocioServiceImp implements ISocioService {
 	}
 
 	@Override
-	public boolean existsTfnoMbSoc(Integer tfnoMb, int socID) {
+	public boolean existsTfnoMbSoc(String tfnoMb, int socID) {
 		return socDao.findBySocTfnoMb(tfnoMb) != null && (socID == 0 || socDao.findBySocTfnoMb(tfnoMb).getSocID() != socID);
 	}
 

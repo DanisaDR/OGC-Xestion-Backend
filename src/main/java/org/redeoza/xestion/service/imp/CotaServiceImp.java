@@ -6,17 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * <b>CotaServiceImp.java<b>
- * 
- * @author Daniel Isasi
- * @since 29 ene. 2020
- */
 @Service
 public class CotaServiceImp implements ICotaService {
 
 	@Autowired
-	private ICotaDao cotaDao;
+	ICotaDao cotaDao;
 
 	@Override
 	@Transactional(readOnly = true)

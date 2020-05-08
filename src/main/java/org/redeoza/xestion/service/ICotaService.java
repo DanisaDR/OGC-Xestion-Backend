@@ -7,7 +7,5 @@ package org.redeoza.xestion.service;
  * @since 16 ene. 2020
  */
 public interface ICotaService {
-
-	public int sumCotasByYear(int cotaAnual);
-
+	int sumCotasByYear(int cotaAnual);
 }

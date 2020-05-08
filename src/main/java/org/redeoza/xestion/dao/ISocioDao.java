@@ -9,28 +9,24 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-/**
- * <b>ISocioDao.java<b>
- * 
- * @author Daniel Isasi
- * @since 16 ene. 2020
- */
 @Repository
 public interface ISocioDao extends JpaRepository<Socio, Integer> {
 
-	@Query("select s from Socio s where s.socNomComp like %:searchSocNomComp% and s.socEnder like %:searchSocEnder% and (s.socEmail like %:searchSocEmail% or s.socEmail = null)")
+	@Query("select s from Socio s where s.socNomComp like %:searchSocNomComp% " +
+			"and s.socEnder like %:searchSocEnder% " +
+			"and s.socEmail like %:searchSocEmail% " +
+			"and s.socTfnoFx like %:searchSocTfnoFx% " +
+			"and s.socTfnoMb like %:searchSocTfnoMb%")
 	Page<Socio> searchAndPaginationSoc(Pageable pageable, @Param("searchSocNomComp") String searchSocNomComp,
-			@Param("searchSocEnder") String searchSocEnder, @Param("searchSocEmail") String searchSocEmail);
+			@Param("searchSocEnder") String searchSocEnder, @Param("searchSocEmail") String searchSocEmail,
+			@Param("searchSocTfnoFx") String searchSocTfnoFx, @Param("searchSocTfnoMb") String searchSocTfnoMb);
 
-	@Query("select s from Socio s where s.socTfnoFx = :socTfnoFx")
-	public Socio findBySocTfnoFx(@Param("socTfnoFx") Integer socTfnoFx);
-
-	@Query("select s from Socio s where s.socTfnoMb = :socTfnoMb")
-	public Socio findBySocTfnoMb(@Param("socTfnoMb") Integer socTfnoMb);
+	@Query("select s from Socio s where s.socTfnoMb like %:socTfnoMb%")
+	Socio findBySocTfnoMb(@Param("socTfnoMb") String socTfnoMb);
 
 	@Query("select count(s) from Socio s where s.socAct = :socAct")
-	public int socActNoActs(@Param("socAct") boolean socAct);
+	int socActNoActs(@Param("socAct") boolean socAct);
 
-	@Query("select s from Socio s where s.socEmail = :socEmail")
-	public Socio findBySocEmail(@Param("socEmail") String socEmail);
+	@Query("select s from Socio s where s.socEmail like %:socEmail%")
+	Socio findBySocEmail(@Param("socEmail") String socEmail);
 }

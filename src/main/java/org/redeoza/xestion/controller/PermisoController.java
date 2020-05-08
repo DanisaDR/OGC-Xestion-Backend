@@ -15,12 +15,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-/**
- * <b>PermisoController.java<b>
- * 
- * @author Daniel Isasi
- * @since 28 ene. 2020
- */
 @RestController
 @CrossOrigin(origins = "*")
 @RequestMapping("permisos")

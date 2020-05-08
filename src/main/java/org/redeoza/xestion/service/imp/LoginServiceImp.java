@@ -21,20 +21,14 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * <b>LoginServiceImp.java<b>
- * 
- * @author Daniel Isasi
- * @since 19 ene. 2020
- */
 @Service
 public class LoginServiceImp implements UserDetailsService, ILoginService {
 
 	@Autowired
-	private ILoginDao loginDao;
+	ILoginDao loginDao;
 
 	@Autowired
-	private BCryptPasswordEncoder passEncoder;
+	BCryptPasswordEncoder passEncoder;
 
 	@Override
 	@Transactional(readOnly = true)
@@ -88,7 +82,7 @@ public class LoginServiceImp implements UserDetailsService, ILoginService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public UserDetails loadUserByUsername(String usuAlias) throws UsernameNotFoundException {
+	public UserDetails loadUserByUsername(String usuAlias) {
 
 		final Login login = loginDao.findByUsuAlias(usuAlias);
 
@@ -105,28 +99,10 @@ public class LoginServiceImp implements UserDetailsService, ILoginService {
 		}
 	}
 
-	/**
-	 * <b>getAuthorities</b>
-	 * <p>
-	 * Creado: 17 ene. 2020
-	 * <p>
-	 * 
-	 * @param roles
-	 * @return
-	 */
 	private Collection<? extends GrantedAuthority> getAuthorities(Collection<Rol> roles) {
 		return getGrantedAuthorities(getPrivileges(roles));
 	}
 
-	/**
-	 * <b>getGrantedAuthorities</b>
-	 * <p>
-	 * Creado: 17 ene. 2020
-	 * <p>
-	 * 
-	 * @param privileges
-	 * @return
-	 */
 	private Collection<? extends GrantedAuthority> getGrantedAuthorities(List<String> privileges) {
 		final List<GrantedAuthority> authorities = new ArrayList<>();
 
@@ -135,15 +111,6 @@ public class LoginServiceImp implements UserDetailsService, ILoginService {
 		return authorities;
 	}
 
-	/**
-	 * <b>getPrivileges</b>
-	 * <p>
-	 * Creado: 17 ene. 2020
-	 * <p>
-	 * 
-	 * @param roles
-	 * @return
-	 */
 	private List<String> getPrivileges(Collection<Rol> roles) {
 		final List<String> privileges = new ArrayList<>();
 		final List<Permiso> collection = new ArrayList<>();

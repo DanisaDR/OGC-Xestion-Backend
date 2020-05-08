@@ -1,11 +1,5 @@
 package org.redeoza.xestion.utils;
 
-/**
- * <b>UtilConstant.java<b>
- * 
- * @author Daniel Isasi
- * @since 13 ene. 2020
- */
 public class UtilConstant {
 
 	// Mensaxes LOGGER de excepcións.
@@ -37,7 +31,9 @@ public class UtilConstant {
 	// Mensaxes SOCI@
 	public static final String NEW_SOCIO = "O/A novo/a socio/a co ID: OGC - ";
 	public static final String UPDATED_SOCIO = "O/A socio/a queda actualizado co ID: OGC - ";
+	public static final String COMPLETE_NAME_SOCIO = " co nome completo: ";
 	public static final String NOT_FOUND_SOCIO = "O/A usuario/a que intentas atopar non o temos rexistrado. Revise o ID sen poñer por exemplo: [OGC-10]";
+	public static final String ALMOST_ONE_PHONE = "Temos que ter un teléfono rexistrado.";
 
 	// Mensaxes ROLES
 	public static final String NOT_FOUND_ROL = "O rol que intentas atopar non esta rexistrado.";

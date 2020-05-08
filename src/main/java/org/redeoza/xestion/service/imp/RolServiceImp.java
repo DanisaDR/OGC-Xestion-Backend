@@ -1,5 +1,6 @@
 package org.redeoza.xestion.service.imp;
 
+import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
 
@@ -10,22 +11,16 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-/**
- * <b>UserDataServiceImp.java<b>
- * 
- * @author Daniel Isasi
- * @since 12 ene. 2020
- */
 @Service
 public class RolServiceImp implements IRolService {
 
 	@Autowired
-	private IRolDao rolDao;
+	IRolDao rolDao;
 
 	@Override
 	@Transactional(readOnly = true)
 	public Set<Rol> getAllRoles() {
-		return rolDao.findAll().stream().collect(Collectors.toSet());
+		return new HashSet<>(rolDao.findAll());
 	}
 
 	@Override

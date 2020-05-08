@@ -12,17 +12,11 @@ import org.springframework.security.oauth2.provider.OAuth2Authentication;
 import org.springframework.security.oauth2.provider.token.TokenEnhancer;
 import org.springframework.stereotype.Component;
 
-/**
- * <b>CustomTokenEnhancer.java<b>
- * 
- * @author Daniel Isasi
- * @since 25 ene. 2020
- */
 @Component
 public class CustomTokenEnhancer implements TokenEnhancer {
 
 	@Autowired
-	private ILoginDao loginDao;
+	ILoginDao loginDao;
 
 	@Override
 	public OAuth2AccessToken enhance(OAuth2AccessToken accessToken, OAuth2Authentication authentication) {

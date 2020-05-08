@@ -27,12 +27,6 @@ import org.springframework.web.client.HttpClientErrorException.Unauthorized;
 import org.springframework.web.context.request.WebRequest;
 import org.springframework.web.servlet.mvc.method.annotation.ResponseEntityExceptionHandler;
 
-/**
- * <b>RestExceptionHandler.java<b>
- * 
- * @author Daniel Isasi
- * @since 12 ene. 2020
- */
 @Order(Ordered.HIGHEST_PRECEDENCE)
 @RestControllerAdvice
 public class ExceptionHandlerController extends ResponseEntityExceptionHandler {

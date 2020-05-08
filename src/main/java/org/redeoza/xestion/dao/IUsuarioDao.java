@@ -8,12 +8,6 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
-/**
- * <b>IUserDataDao.java<b>
- * 
- * @author Daniel Isasi
- * @since 12 ene. 2020
- */
 @Repository
 public interface IUsuarioDao extends JpaRepository<Usuario, Integer> {
 
