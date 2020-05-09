@@ -178,14 +178,10 @@ public class SocioController {
 
 	@Secured({ "ROLE_ADMIN", "ROLE_DIRECTIVA" })
 	@PreAuthorize("hasPermission('hasAccess', 'TODOS_PERMISOS')")
-	@PostMapping(value = "existe-mb/{socID}/{socTfnoMb}")
-	public ResponseEntity<Map<String, Object>> existsPhoneMbUser(@PathVariable String socTfnoMb, @PathVariable int socID) {
-		boolean exists = socSrv.existsTfnoMbSoc(socTfnoMb, socID);
-
+	@PostMapping(value = {"existe-mb/{socID}/{socTfnoMb}", "existe-mb/{socID}"})
+	public boolean existsPhoneMbSoc(@PathVariable(required = false) String socTfnoMb, @PathVariable int socID) {
 		try {
-			final Map<String, Object> response = new HashMap<>();
-			response.put("exists", exists);
-			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+			return socSrv.existsTfnoMbSoc(socTfnoMb, socID);
 		} catch (Exception ex) {
 			throw new GenericException(ex.getLocalizedMessage());
 		}
