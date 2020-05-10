@@ -80,12 +80,6 @@ public class SocioServiceImp implements ISocioService {
 
 	@Override
 	@Transactional(readOnly = true)
-	public Socio searchSocByTfnoMb(String socTfnoMb) {
-		return socDao.findBySocTfnoMb(socTfnoMb);
-	}
-
-	@Override
-	@Transactional(readOnly = true)
 	public int socActNoActs(boolean socAct) {
 		return socDao.socActNoActs(socAct);
 	}
