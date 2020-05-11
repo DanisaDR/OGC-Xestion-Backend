@@ -16,18 +16,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
-import net.bytebuddy.implementation.bind.annotation.Empty;
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import org.hibernate.validator.constraints.Length;
+import org.springframework.lang.Nullable;
 
 @Entity
 @Table(name = "usuario")
@@ -63,13 +60,13 @@ public class Usuario implements Serializable {
 	@Column(name = "usu_ender")
 	private String usuEnder;
 
-	@Length(min = 9, message = "{usuTfnoMb.min}")
-	@Length(max = 9, message = "{usuTfnoMb.max}")
+	@Nullable
+	@Length(min = 9,max = 9, message = "{usuTfnoMb.length}")
 	@Column(name = "usu_tfno_mb")
 	private String usuTfnoMb;
 
-	@Length(min = 9, message = "{usuTfnoFx.min}")
-	@Length(max = 9, message = "{usuTfnoFx.max}")
+	@Nullable
+	@Length(min = 9,max = 9, message = "{usuTfnoFx.length}")
 	@Column(name = "usu_tfno_fx")
 	private String usuTfnoFx;
 
