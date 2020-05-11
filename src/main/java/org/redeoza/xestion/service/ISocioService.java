@@ -19,8 +19,6 @@ public interface ISocioService {
 
 	void deleteSoc(Socio socio);
 
-	Socio searchSocByTfnoMb(String socTfnoMb);
-
 	int socActNoActs(boolean socAct);
 
 	boolean existsTfnoMbSoc(String tfnoMb, int socID);

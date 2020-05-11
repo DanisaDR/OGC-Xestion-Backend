@@ -26,6 +26,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
 
@@ -69,13 +70,17 @@ public class Socio implements Serializable {
 
 	@NotNull
 	@Min(15000)
-	@Max(15009)
+	@Max(15011)
 	@Column(name = "soc_cp")
 	private int socCP;
 
+	@Nullable
+	@Length(min = 9, max = 9)
 	@Column(name = "soc_tfno_fx")
 	private String socTfnoFx;
 
+	@Nullable
+	@Length(min = 9, max = 9)
 	@Column(name = "soc_tfno_mb")
 	private String socTfnoMb;
 

@@ -48,7 +48,7 @@ public class UsuarioServiceImp implements IUsuarioService {
 	@Transactional(readOnly = true)
 	public Page<Usuario> searchAndPagination(int page, int size, String order, boolean ordenationType,
 			String searchUsuNom, String searchUsuApe1, String searchUsuApe2, String searchUsuEnder,
-			Integer searchUsuTfnoFx, Integer searchUsuTfnoMb) {
+			String searchUsuTfnoFx, String searchUsuTfnoMb) {
 
 		PageRequest pageable = null;
 
@@ -60,33 +60,13 @@ public class UsuarioServiceImp implements IUsuarioService {
 
 		Page<Usuario> searchPage = null;
 
-		final Usuario tfnoFx = searchByTfnoFx(searchUsuTfnoFx);
-		final Usuario tfnoMb = searchByTfnoMb(searchUsuTfnoMb);
-
-		if ((tfnoFx != null) && (tfnoMb == null)) {
-			searchPage = usuDao.searchAndPaginationUser(pageable, tfnoFx.getUsuNom(), tfnoFx.getUsuApe1(),
-					tfnoFx.getUsuApe2(), tfnoFx.getUsuEnder());
-		} else if ((tfnoMb != null) && (tfnoFx == null)) {
-			searchPage = usuDao.searchAndPaginationUser(pageable, tfnoMb.getUsuNom(), tfnoMb.getUsuApe1(),
-					tfnoMb.getUsuApe2(), tfnoMb.getUsuEnder());
-		} else {
-			searchPage = usuDao.searchAndPaginationUser(pageable, searchUsuNom, searchUsuApe1, searchUsuApe2,
-					searchUsuEnder);
-		}
+		searchPage = usuDao.searchAndPaginationUser(
+				pageable, searchUsuNom, searchUsuApe1,
+				searchUsuApe2, searchUsuEnder,
+				searchUsuTfnoFx, searchUsuTfnoMb
+		);
 
 		return searchPage;
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public Usuario searchByTfnoMb(Integer usuTfnoMb) {
-		return usuDao.findByUserTfnoMb(usuTfnoMb);
-	}
-
-	@Override
-	@Transactional(readOnly = true)
-	public Usuario searchByTfnoFx(Integer usuTfnoFx) {
-		return usuDao.findByUserTfnoMb(usuTfnoFx);
 	}
 
 	@Override
@@ -111,7 +91,7 @@ public class UsuarioServiceImp implements IUsuarioService {
 	}
 
 	@Override
-	public boolean existsTfnoMbUser(Integer tfnoMb, int usuID) {
+	public boolean existsTfnoMbUser(String tfnoMb, int usuID) {
 		return usuDao.findByUserTfnoMb(tfnoMb) != null && (usuID == 0 || usuDao.findByUserTfnoMb(tfnoMb).getUsuID() != usuID);
 	}
 }

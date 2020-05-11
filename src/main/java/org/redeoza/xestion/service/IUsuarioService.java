@@ -17,15 +17,11 @@ public interface IUsuarioService {
 
 	Page<Usuario> searchAndPagination(int page, int size, String order, boolean ordenationType,
 			String searchUsuNom, String searchUsuApe1, String searchUsuApe2, String searchUsuEnder,
-			Integer searchUsuTfnoFx, Integer searchUsuTfnoMb);
-
-	Usuario searchByTfnoMb(Integer usuTfnoMb);
-
-	Usuario searchByTfnoFx(Integer usuTfnoFx);
+			String searchUsuTfnoFx, String searchUsuTfnoMb);
 
 	void establishMonForAct(Usuario newUser);
 
 	void changeStatusUser(Usuario usuario);
 
-	boolean existsTfnoMbUser(Integer tfnoMb, int usuID);
+	boolean existsTfnoMbUser(String tfnoMb, int usuID);
 }

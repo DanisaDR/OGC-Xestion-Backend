@@ -16,16 +16,15 @@ import javax.persistence.OneToMany;
 import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Transient;
-import javax.validation.constraints.Max;
-import javax.validation.constraints.Min;
 import javax.validation.constraints.NotEmpty;
-import javax.validation.constraints.Positive;
 import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.hibernate.validator.constraints.Length;
+import org.springframework.lang.Nullable;
 
 @Entity
 @Table(name = "usuario")
@@ -61,17 +60,15 @@ public class Usuario implements Serializable {
 	@Column(name = "usu_ender")
 	private String usuEnder;
 
-	@Positive(message = "{usuTfnoMb.empty}")
-	@Min(value = 600000000, message = "{usuTfnoMb.min}")
-	@Max(value = 699999999, message = "{usuTfnoMb.max}")
+	@Nullable
+	@Length(min = 9,max = 9, message = "{usuTfnoMb.length}")
 	@Column(name = "usu_tfno_mb")
-	private Integer usuTfnoMb;
+	private String usuTfnoMb;
 
-	@Positive
-	@Min(value = 880000000, message = "{usuTfnoFx.min}")
-	@Max(value = 981999999, message = "{usuTfnoFx.max}")
+	@Nullable
+	@Length(min = 9,max = 9, message = "{usuTfnoFx.length}")
 	@Column(name = "usu_tfno_fx")
-	private Integer usuTfnoFx;
+	private String usuTfnoFx;
 
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "usuario_rol", joinColumns = @JoinColumn(name = "usu_id"), inverseJoinColumns = @JoinColumn(name = "rol_id"))
@@ -137,19 +134,19 @@ public class Usuario implements Serializable {
 		this.usuEnder = usuEnder;
 	}
 
-	public Integer getUsuTfnoMb() {
+	public String getUsuTfnoMb() {
 		return this.usuTfnoMb;
 	}
 
-	public void setUsuTfnoMb(Integer usuTfnoMb) {
+	public void setUsuTfnoMb(String usuTfnoMb) {
 		this.usuTfnoMb = usuTfnoMb;
 	}
 
-	public Integer getUsuTfnoFx() {
+	public String getUsuTfnoFx() {
 		return this.usuTfnoFx;
 	}
 
-	public void setUsuTfnoFx(Integer usuTfnoFx) {
+	public void setUsuTfnoFx(String usuTfnoFx) {
 		this.usuTfnoFx = usuTfnoFx;
 	}
 

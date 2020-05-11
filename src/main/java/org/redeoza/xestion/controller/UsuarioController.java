@@ -46,13 +46,13 @@ import org.springframework.web.bind.annotation.RestController;
 public class UsuarioController {
 
 	@Autowired
-	private IUsuarioService usrSrv;
+	IUsuarioService usrSrv;
 
 	@Autowired
-	private ILoginService loginSrv;
+	ILoginService loginSrv;
 
 	@Autowired
-	private IActividadeService actSrv;
+	IActividadeService actSrv;
 
 	@Secured({ "ROLE_ADMIN", "ROLE_DIRECTIVA" })
 	@PreAuthorize("hasPermission('hasAccess', 'TODOS_PERMISOS')")
@@ -74,8 +74,8 @@ public class UsuarioController {
 			@RequestParam(value = "searchUsuApe1", required = false) String searchUsuApe1,
 			@RequestParam(value = "searchUsuApe2", required = false) String searchUsuApe2,
 			@RequestParam(value = "searchUsuEnder", required = false) String searchUsuEnder,
-			@RequestParam(value = "searchUsuTfnoFx", required = false) Integer searchUsuTfnoFx,
-			@RequestParam(value = "searchUsuTfnoMb", required = false) Integer searchUsuTfnoMb,
+			@RequestParam(value = "searchUsuTfnoFx", required = false) String searchUsuTfnoFx,
+			@RequestParam(value = "searchUsuTfnoMb", required = false) String searchUsuTfnoMb,
 			@RequestParam(value = "order", required = false, defaultValue = "usuID") String order,
 			@RequestParam(defaultValue = "true") boolean ordenationType,
 			@PathVariable(value = "page", required = false) int page,
@@ -160,7 +160,7 @@ public class UsuarioController {
 		final Map<String, Object> response = new HashMap<>();
 
 		if (result.hasErrors()) {
-			final List<String> errors = result.getFieldErrors().stream().map(err -> err.getDefaultMessage())
+			final List<String> errors = result.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
 					.collect(Collectors.toList());
 
 			throw new MissingFieldException(errors.toString());
@@ -282,11 +282,8 @@ public class UsuarioController {
 
 	@Secured({ "ROLE_ADMIN", "ROLE_DIRECTIVA" })
 	@PreAuthorize("hasPermission('hasAccess', 'TODOS_PERMISOS')")
-	@PostMapping(value = "existe-mb/{usuID}/{usuTfnoMb}")
-	public boolean existsPhoneMbUser(@PathVariable(required = false) Integer usuTfnoMb, @PathVariable int usuID) {
-		if(usuTfnoMb == null) {
-			usuTfnoMb = 0;
-		}
+	@PostMapping(value = { "existe-mb/{usuID}/{usuTfnoMb}", "existe-mb/{usuID}"})
+	public boolean existsPhoneMbUser(@PathVariable(required = false) String usuTfnoMb, @PathVariable int usuID) {
 		try {
 			return usrSrv.existsTfnoMbUser(usuTfnoMb, usuID);
 		} catch (Exception ex) {
