@@ -26,6 +26,7 @@ import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.format.annotation.DateTimeFormat;
 
 /**
  * <b>Actividade.java<b>
@@ -61,12 +62,14 @@ public class Actividade implements Serializable {
 	private int actAport;
 
 	@NotNull(message = "{actDataComezo.notNull}")
-	@Temporal(value = TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/M/yyyy")
 	@Column(name = "act_data_comezo")
 	private Date actDataComezo;
 
 	@NotNull(message = "{actDataRemate.notNull}")
-	@Temporal(value = TemporalType.DATE)
+	@Temporal(TemporalType.TIMESTAMP)
+	@DateTimeFormat(pattern = "dd/M/yyyy")
 	@Column(name = "act_data_remate")
 	private Date actDataRemate;
 
