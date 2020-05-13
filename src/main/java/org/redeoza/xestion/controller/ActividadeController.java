@@ -125,11 +125,11 @@ public class ActividadeController {
 	public ResponseEntity<Map<String, Object>> updateAct(@Valid @RequestBody Actividade actividade,
 			BindingResult result, @PathVariable int actID) {
 
-		final Actividade actToUpdated = actSrv.findByActID(actID);
-
 		final Actividade actWellUpdate = null;
 
 		final Map<String, Object> response = new HashMap<>();
+
+		final Actividade actToUpdated = actSrv.findByActID(actID);
 
 		if (result.hasErrors()) {
 			final List<String> errors = result.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
