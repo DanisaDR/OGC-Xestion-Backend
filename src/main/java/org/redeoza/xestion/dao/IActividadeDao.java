@@ -8,9 +8,12 @@ import org.springframework.data.jpa.repository.Query;
 import org.springframework.data.repository.query.Param;
 import org.springframework.stereotype.Repository;
 
+import java.util.Date;
+
 @Repository
 public interface IActividadeDao extends JpaRepository<Actividade, Integer> {
 
-	@Query("select a from Actividade a where a.actNom like %:searchActNom%")
-	Page<Actividade> searchAndPaginationAct(Pageable pageable, @Param("searchActNom") String searchActNom);
+	@Query("select a from Actividade a where a.actNom like %:searchActNom% " +
+            "or a.actAport = :searchActAport")
+	Page<Actividade> searchAndPaginationAct(Pageable pageable, @Param("searchActNom") String searchActNom, @Param("searchActAport") int searchActAport);
 }

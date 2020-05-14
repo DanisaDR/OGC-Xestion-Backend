@@ -1,5 +1,6 @@
 package org.redeoza.xestion.service.imp;
 
+import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
 import java.util.stream.Collectors;
@@ -50,12 +51,14 @@ public class ActividadeServiceImp implements IActividadeService {
 
 	@Override
 	public void addSociosToAct(Actividade actividade) {
-		actividade.getSocios().forEach(soc -> socSrv.getSocioById(soc.getSocID()));
+		if(!actividade.getSocios().isEmpty()) {
+			actividade.getSocios().forEach(soc -> socSrv.getSocioById(soc.getSocID()));
+		}
 	}
 
 	@Override
 	public Page<Actividade> searchAndPagination(int page, int size, String order, boolean ordenationType,
-			String searchActNom) {
+												String searchActNom, int searchActAport) {
 		PageRequest pageable = null;
 
 		if (ordenationType) {
@@ -66,7 +69,7 @@ public class ActividadeServiceImp implements IActividadeService {
 
 		Page<Actividade> searchPage = null;
 
-		searchPage = actDao.searchAndPaginationAct(pageable, searchActNom);
+		searchPage = actDao.searchAndPaginationAct(pageable, searchActNom, searchActAport);
 
 		return searchPage;
 	}

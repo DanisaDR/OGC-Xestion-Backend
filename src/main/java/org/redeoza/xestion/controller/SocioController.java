@@ -130,8 +130,6 @@ public class SocioController {
 	public ResponseEntity<Map<String, Object>> updateUser(@Valid @RequestBody Socio socio, BindingResult result,
 			@PathVariable Integer socID) {
 
-		final Socio socUpdated = socSrv.getSocioById(socID);
-
 		final Map<String, Object> response = new HashMap<>();
 
 		if (result.hasErrors()) {
@@ -141,12 +139,14 @@ public class SocioController {
 			throw new MissingFieldException(errors.toString());
 		}
 
-		if (socio.getSocTfnoFx().equals(StringUtils.EMPTY) && socio.getSocTfnoMb().equals(StringUtils.EMPTY)) {
-			throw new MissingFieldException(UtilConstant.ALMOST_ONE_PHONE);
-		}
+		final Socio socUpdated = socSrv.getSocioById(socID);
 
 		if (socUpdated == null) {
 			throw new MissingFieldException(UtilConstant.NOT_FOUND_SOCIO);
+		}
+
+		if (socio.getSocTfnoFx().equals(StringUtils.EMPTY) && socio.getSocTfnoMb().equals(StringUtils.EMPTY)) {
+			throw new MissingFieldException(UtilConstant.ALMOST_ONE_PHONE);
 		}
 
 		try {
