@@ -1,9 +1,7 @@
 package org.redeoza.xestion.service.imp;
 
-import java.util.Date;
 import java.util.HashSet;
 import java.util.Set;
-import java.util.stream.Collectors;
 
 import org.redeoza.xestion.dao.IActividadeDao;
 import org.redeoza.xestion.model.Actividade;
@@ -69,7 +67,11 @@ public class ActividadeServiceImp implements IActividadeService {
 
 		Page<Actividade> searchPage = null;
 
-		searchPage = actDao.searchAndPaginationAct(pageable, searchActNom, searchActAport);
+		if(searchActAport == 0) {
+			searchPage = actDao.searchAndPaginationAct(pageable, searchActNom);
+		} else {
+			searchPage = actDao.searchAndPaginationAct(pageable, searchActNom, searchActAport);
+		}
 
 		return searchPage;
 	}
