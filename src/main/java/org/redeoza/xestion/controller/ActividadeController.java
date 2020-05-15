@@ -1,9 +1,6 @@
 package org.redeoza.xestion.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -57,17 +54,24 @@ public class ActividadeController {
 	@GetMapping(value = "paxina/{page}")
 	public ResponseEntity<Page<Actividade>> findByParam(
 			@RequestParam(value = "searchActNom", required = false) String searchActNom,
+            @RequestParam(value = "searchActAport", required = false) String searchActAport,
 			@RequestParam(value = "order", required = false, defaultValue = "actID") String order,
 			@RequestParam(defaultValue = "true") boolean ordenationType,
 			@PathVariable(value = "page", required = false) int page,
 			@RequestParam(value = "size", required = false, defaultValue = "5") int size) {
 
 		Page<Actividade> pages = null;
+		int aport = 0;
+
 		try {
-			pages = actSrv.searchAndPagination(page, size, order, ordenationType, searchActNom);
+            aport = Integer.parseInt(searchActAport);
+			pages = actSrv.searchAndPagination(page, size, order, ordenationType, searchActNom, aport);
 
 			return new ResponseEntity<Page<Actividade>>(pages, HttpStatus.OK);
-		} catch (final Exception ex) {
+		} catch (final NumberFormatException ex) {
+            pages = actSrv.searchAndPagination(page, size, order, ordenationType, searchActNom, 0);
+            return new ResponseEntity<Page<Actividade>>(pages, HttpStatus.OK);
+        } catch (final Exception ex) {
 			throw new GenericException(ex.getMessage());
 		}
 	}
@@ -106,6 +110,10 @@ public class ActividadeController {
 			throw new MissingFieldException(errors.toString());
 		}
 
+		if(actividade.getUsuario() == null) {
+			throw new MissingFieldException(UtilConstant.NOT_FOUND_MONITOR);
+		}
+
 		try {
 			actSrv.addSociosToAct(actividade);
 			actSrv.saveAct(actividade);
@@ -125,10 +133,6 @@ public class ActividadeController {
 	public ResponseEntity<Map<String, Object>> updateAct(@Valid @RequestBody Actividade actividade,
 			BindingResult result, @PathVariable int actID) {
 
-		final Actividade actToUpdated = actSrv.findByActID(actID);
-
-		final Actividade actWellUpdate = null;
-
 		final Map<String, Object> response = new HashMap<>();
 
 		if (result.hasErrors()) {
@@ -138,12 +142,28 @@ public class ActividadeController {
 			throw new MissingFieldException(errors.toString());
 		}
 
+		final Actividade actToUpdated = actSrv.findByActID(actID);
+
 		if (actToUpdated == null) {
 			throw new MissingFieldException(UtilConstant.NOT_FOUND_ACTIVIDADE);
 		}
 
 		try {
-			response.put(UtilConstant.MESSAGE, UtilConstant.UPDATED_ACTIVIDADE.concat(actWellUpdate.getActNom()));
+			actToUpdated.setActNom(actividade.getActNom());
+			actToUpdated.setActDescr(actividade.getActDescr());
+			actToUpdated.setActAport(actividade.getActAport());
+			actToUpdated.setActDataComezo(actividade.getActDataComezo());
+			actToUpdated.setActDataRemate(actividade.getActDataRemate());
+
+			if(actividade.getUsuario() == null) {
+				throw new MissingFieldException(UtilConstant.NOT_FOUND_MONITOR);
+			}
+
+			actToUpdated.setUsuario(actividade.getUsuario());
+
+			actSrv.saveAct(actToUpdated);
+
+			response.put(UtilConstant.MESSAGE, UtilConstant.UPDATED_ACTIVIDADE.concat(actToUpdated.getActNom()));
 
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 		} catch (final Exception ex) {

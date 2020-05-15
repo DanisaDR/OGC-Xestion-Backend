@@ -1,9 +1,6 @@
 package org.redeoza.xestion.controller;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.Collectors;
 
 import javax.validation.Valid;
@@ -101,12 +98,12 @@ public class SocioController {
 	@Secured({ "ROLE_ADMIN", "ROLE_DIRECTIVA" })
 	@PreAuthorize("hasPermission('hasAccess', 'TODOS_PERMISOS')")
 	@PostMapping(value = "crear")
-	public ResponseEntity<Map<String, Object>> createUser(@Valid @RequestBody Socio socio, BindingResult result) {
+	public ResponseEntity<Map<String, Object>> createSoc(@Valid @RequestBody Socio socio, BindingResult result) {
 
 		final Map<String, Object> response = new HashMap<>();
 
 		if (result.hasErrors()) {
-			final List<String> errors = result.getFieldErrors().stream().map(err -> err.getDefaultMessage())
+			final List<String> errors = result.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
 					.collect(Collectors.toList());
 
 			throw new MissingFieldException(errors.toString());
@@ -127,10 +124,8 @@ public class SocioController {
 	@Secured({ "ROLE_ADMIN", "ROLE_DIRECTIVA" })
 	@PreAuthorize("hasPermission('hasAccess', 'TODOS_PERMISOS')")
 	@PutMapping(value = "modificar/{socID}")
-	public ResponseEntity<Map<String, Object>> updateUser(@Valid @RequestBody Socio socio, BindingResult result,
+	public ResponseEntity<Map<String, Object>> updateSoc(@Valid @RequestBody Socio socio, BindingResult result,
 			@PathVariable Integer socID) {
-
-		final Socio socUpdated = socSrv.getSocioById(socID);
 
 		final Map<String, Object> response = new HashMap<>();
 
@@ -141,12 +136,15 @@ public class SocioController {
 			throw new MissingFieldException(errors.toString());
 		}
 
-		if (socio.getSocTfnoFx().equals(StringUtils.EMPTY) && socio.getSocTfnoMb().equals(StringUtils.EMPTY)) {
-			throw new MissingFieldException(UtilConstant.ALMOST_ONE_PHONE);
-		}
+		final Socio socUpdated = socSrv.getSocioById(socID);
 
 		if (socUpdated == null) {
 			throw new MissingFieldException(UtilConstant.NOT_FOUND_SOCIO);
+		}
+
+		if (Objects.requireNonNull(socio.getSocTfnoFx()).isEmpty()
+				&& Objects.requireNonNull(socio.getSocTfnoMb()).isEmpty()) {
+			throw new MissingFieldException(UtilConstant.ALMOST_ONE_PHONE);
 		}
 
 		try {
@@ -155,8 +153,16 @@ public class SocioController {
 			socUpdated.setSocPob(socio.getSocPob());
 			socUpdated.setSocCP(socio.getSocCP());
 			socUpdated.setSocTfnoFx(socio.getSocTfnoFx());
+
+			if(socio.getSocDataBaixa() == null) {
+				socUpdated.setSocAct(true);
+				socUpdated.setSocDataBaixa(null);
+			} else {
+				socUpdated.setSocAct(false);
+				socUpdated.setSocDataBaixa(socio.getSocDataBaixa());
+			}
+
 			socUpdated.setSocTfnoMb(socio.getSocTfnoMb());
-			socUpdated.setSocDataBaixa(socio.getSocDataBaixa());
 			socUpdated.setSocEmail(socio.getSocEmail());
 
 			socUpdated.setCotas(socio.getCotas());
@@ -165,6 +171,37 @@ public class SocioController {
 			socSrv.saveSoc(socUpdated);
 
 			response.put(UtilConstant.MESSAGE, UtilConstant.UPDATED_SOCIO
+					.concat(String.valueOf(socUpdated.getSocID()))
+					.concat(UtilConstant.COMPLETE_NAME_SOCIO)
+					.concat(socUpdated.getSocNomComp()));
+
+			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
+
+		} catch (final Exception ex) {
+			throw new GenericException(ex.getMessage());
+		}
+	}
+
+	@Secured({ "ROLE_ADMIN", "ROLE_DIRECTIVA" })
+	@PreAuthorize("hasPermission('hasAccess', 'TODOS_PERMISOS')")
+	@PutMapping(value = "baixa/{socID}")
+	public ResponseEntity<Map<String, Object>> leavingSoc(@PathVariable int socID) {
+
+		final Map<String, Object> response = new HashMap<>();
+
+		final Socio socUpdated = socSrv.getSocioById(socID);
+
+		if (socUpdated == null) {
+			throw new MissingFieldException(UtilConstant.NOT_FOUND_SOCIO);
+		}
+
+		try {
+			socUpdated.setSocDataBaixa(new Date());
+			socUpdated.setSocAct(false);
+
+			socSrv.saveSoc(socUpdated);
+
+			response.put(UtilConstant.MESSAGE, UtilConstant.LEAVING
 					.concat(String.valueOf(socUpdated.getSocID()))
 					.concat(UtilConstant.COMPLETE_NAME_SOCIO)
 					.concat(socUpdated.getSocNomComp()));

@@ -1,5 +1,6 @@
 package org.redeoza.xestion.service;
 
+import java.util.Date;
 import java.util.Set;
 
 import org.redeoza.xestion.model.Actividade;
@@ -12,7 +13,7 @@ public interface IActividadeService {
 	Actividade findByActID(int actID);
 
 	Page<Actividade> searchAndPagination(int page, int size, String order, boolean ordenationType,
-			String searchActNom);
+										 String searchActNom, int searchActAport);
 
 	void saveAct(Actividade actividade);
 
