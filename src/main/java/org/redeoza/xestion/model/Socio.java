@@ -75,12 +75,10 @@ public class Socio implements Serializable {
 	private int socCP;
 
 	@Nullable
-	@Length(min = 9, max = 9)
 	@Column(name = "soc_tfno_fx")
 	private String socTfnoFx;
 
 	@Nullable
-	@Length(min = 9, max = 9)
 	@Column(name = "soc_tfno_mb")
 	private String socTfnoMb;
 

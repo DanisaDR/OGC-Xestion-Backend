@@ -1,5 +1,7 @@
 package org.redeoza.xestion.utils;
 
+import javafx.beans.binding.Bindings;
+
 public class UtilConstant {
 
 	// Mensaxes LOGGER de excepcións.
@@ -34,6 +36,7 @@ public class UtilConstant {
 	public static final String COMPLETE_NAME_SOCIO = " co nome completo: ";
 	public static final String NOT_FOUND_SOCIO = "O/A usuario/a que intentas atopar non o temos rexistrado. Revise o ID sen poñer por exemplo: [OGC-10]";
 	public static final String ALMOST_ONE_PHONE = "Temos que ter un teléfono rexistrado.";
+	public static final String LEAVING = " dado/a de baixa";
 
 	// Mensaxes ROLES
 	public static final String NOT_FOUND_ROL = "O rol que intentas atopar non esta rexistrado.";
