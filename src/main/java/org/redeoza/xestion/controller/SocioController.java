@@ -11,6 +11,7 @@ import org.redeoza.xestion.exception.MissingFieldException;
 import org.redeoza.xestion.exception.NotFoundException;
 import org.redeoza.xestion.model.Socio;
 import org.redeoza.xestion.service.ISocioService;
+import org.redeoza.xestion.utils.ManipulationTransientField;
 import org.redeoza.xestion.utils.UtilConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -102,6 +103,10 @@ public class SocioController {
 
 		final Map<String, Object> response = new HashMap<>();
 
+		if(socio.getSocNomComp() == null) {
+			throw new MissingFieldException(UtilConstant.NOT_NOME_COMPLETO);
+		}
+
 		if (result.hasErrors()) {
 			final List<String> errors = result.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
 					.collect(Collectors.toList());
@@ -110,6 +115,7 @@ public class SocioController {
 		}
 
 		try {
+			socio.setSocAct(true);
 			socSrv.saveSoc(socio);
 
 			response.put(UtilConstant.MESSAGE,

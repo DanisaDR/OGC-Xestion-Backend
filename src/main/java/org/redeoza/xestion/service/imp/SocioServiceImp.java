@@ -6,7 +6,7 @@ import java.util.Set;
 import org.redeoza.xestion.dao.ISocioDao;
 import org.redeoza.xestion.model.Socio;
 import org.redeoza.xestion.service.ISocioService;
-import org.redeoza.xestion.utils.SeparateTransientField;
+import org.redeoza.xestion.utils.ManipulationTransientField;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
@@ -21,7 +21,7 @@ public class SocioServiceImp implements ISocioService {
 	ISocioDao socDao;
 
 	@Autowired
-	SeparateTransientField separate;
+    ManipulationTransientField separate;
 
 	@Override
 	@Transactional(readOnly = true)

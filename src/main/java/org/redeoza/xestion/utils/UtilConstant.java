@@ -50,6 +50,9 @@ public class UtilConstant {
 	public static final String DELETE_ACTIVIDADE = "A actividade queda borrada físicamente do aplicativo. Non se pode volver a usar.";
 	public static final String NOT_FOUND_MONITOR = "Non ven cuberto o/a monitora/a";
 
+	// Varias
+	public static final String COMA = ", ";
+
 	// CLAVES RSA DE ACCESO DE ENDPOINTS
 	public static final String RSA_PUBLIC = "AAAAB3NzaC1yc2EAAAADAQABAAACAQDhPbkGRagJhhE9RTxDkj1+piIQWJ9phmLQ/"
 			+ "RiA10HDSq4s714cZvBtT0NpznifURQKAtiCAkR+c1EdpHSpMrS3mhrYwZpKCG4ZlNhje+KfKVH0OTA/x1fM0aF4ZVEXsHhST1"
@@ -111,4 +114,5 @@ public class UtilConstant {
 			+ "u+Q6iU63pu9Jl+Q8e7Pa1tK/eIRcAawvImzO+NItQxujuGIANGrmlsi+WCIinwWP\r\n"
 			+ "NRGani3RvYN0vIhFqLWiRgwW9LCtXaWmo6zSKqpouRNUFtL1rw6Qw53MI8Cz\r\n" +
 			"-----END RSA PRIVATE KEY-----\r\n";
+	public static final String NOT_NOME_COMPLETO = "O nome completo do/a socio/a ven baleiro. Ten cubrirse.";
 }
