@@ -37,6 +37,8 @@ public class UtilConstant {
 	public static final String NOT_FOUND_SOCIO = "O/A usuario/a que intentas atopar non o temos rexistrado. Revise o ID sen poñer por exemplo: [OGC-10]";
 	public static final String ALMOST_ONE_PHONE = "Temos que ter un teléfono rexistrado.";
 	public static final String LEAVING = " dado/a de baixa";
+	public static final String NOT_NOME_COMPLETO = "O nome completo do/a socio/a ven baleiro. Ten cubrirse.";
+	public static final String FAIL_LEAVING_IS_BEFORE = "A data de baixa é menor que a de alta e iso non pode ocurrir.";
 
 	// Mensaxes ROLES
 	public static final String NOT_FOUND_ROL = "O rol que intentas atopar non esta rexistrado.";
@@ -114,5 +116,4 @@ public class UtilConstant {
 			+ "u+Q6iU63pu9Jl+Q8e7Pa1tK/eIRcAawvImzO+NItQxujuGIANGrmlsi+WCIinwWP\r\n"
 			+ "NRGani3RvYN0vIhFqLWiRgwW9LCtXaWmo6zSKqpouRNUFtL1rw6Qw53MI8Cz\r\n" +
 			"-----END RSA PRIVATE KEY-----\r\n";
-	public static final String NOT_NOME_COMPLETO = "O nome completo do/a socio/a ven baleiro. Ten cubrirse.";
 }

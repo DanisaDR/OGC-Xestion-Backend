@@ -181,6 +181,7 @@ public class UsuarioController {
 			userUpdated.setUsuEnder(usuario.getUsuEnder());
 			userUpdated.setUsuTfnoFx(usuario.getUsuTfnoFx());
 			userUpdated.setUsuTfnoMb(usuario.getUsuTfnoMb());
+			userUpdated.getLogin().setUsuEstado(usuario.getLogin().isUsuEstado());
 
 			userUpdated.getLogin().setUsuAlias(usuario.getUsuAlias());
 
@@ -201,7 +202,6 @@ public class UsuarioController {
 
 			return new ResponseEntity<Map<String, Object>>(response, HttpStatus.CREATED);
 		} catch (final Exception ex) {
-			ex.printStackTrace();
 			throw new GenericException(ex.getLocalizedMessage());
 		}
 	}

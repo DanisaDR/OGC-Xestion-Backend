@@ -25,7 +25,7 @@ public class ResourceServerConfig extends ResourceServerConfigurerAdapter {
 
 	@Override
 	public void configure(HttpSecurity http) throws Exception {
-		http.authorizeRequests().antMatchers("/login/intento-sesion").permitAll().anyRequest()
+		http.authorizeRequests().antMatchers("/login/intento-sesion/**").permitAll().anyRequest()
 				.authenticated().and().cors().configurationSource(corsConfigurationSource());
 
 		http.sessionManagement().sessionCreationPolicy(SessionCreationPolicy.IF_REQUIRED);

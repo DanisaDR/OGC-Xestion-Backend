@@ -154,11 +154,6 @@ public class SocioController {
 		}
 
 		try {
-			socUpdated.setSocNomComp(socio.getSocNomComp());
-			socUpdated.setSocEnder(socio.getSocEnder());
-			socUpdated.setSocPob(socio.getSocPob());
-			socUpdated.setSocCP(socio.getSocCP());
-			socUpdated.setSocTfnoFx(socio.getSocTfnoFx());
 
 			if(socio.getSocDataBaixa() == null) {
 				socUpdated.setSocAct(true);
@@ -166,8 +161,16 @@ public class SocioController {
 			} else {
 				socUpdated.setSocAct(false);
 				socUpdated.setSocDataBaixa(socio.getSocDataBaixa());
+				if (socio.getSocDataBaixa().before(socio.getSocDataAlta())) {
+					throw new MissingFieldException(UtilConstant.FAIL_LEAVING_IS_BEFORE);
+				}
 			}
 
+			socUpdated.setSocNomComp(socio.getSocNomComp());
+			socUpdated.setSocEnder(socio.getSocEnder());
+			socUpdated.setSocPob(socio.getSocPob());
+			socUpdated.setSocCP(socio.getSocCP());
+			socUpdated.setSocTfnoFx(socio.getSocTfnoFx());
 			socUpdated.setSocTfnoMb(socio.getSocTfnoMb());
 			socUpdated.setSocEmail(socio.getSocEmail());
 

@@ -15,5 +15,5 @@ public interface ILoginService {
 
 	void deleteLogin(Integer loginID);
 
-	Integer attemptLogin(Integer usuID);
+	int attemptLogin(String usuAlias);
 }
