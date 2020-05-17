@@ -9,7 +9,6 @@ import org.springframework.stereotype.Repository;
 @Repository
 public interface ICotaDao extends JpaRepository<Cota, Integer> {
 
-	@Query("select sum(c.cotaImporte) from Cota c where c.cotaAnual = :cotaAnual")
-	public int sumCotasByYear(@Param("cotaAnual") int cotaAnual);
-
+	@Query("select sum(c.cotaImporte) from Cota c where c.cotaAnual = :cotaAnual order by c.cotaAnual")
+	int sumCotasByYear(@Param("cotaAnual") int cotaAnual);
 }

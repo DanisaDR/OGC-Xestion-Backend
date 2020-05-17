@@ -1,23 +1,9 @@
 package org.redeoza.xestion.model;
 
 import java.io.Serializable;
-import java.util.Date;
-import java.util.Set;
+import java.util.*;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.FetchType;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
-import javax.persistence.JoinColumn;
-import javax.persistence.JoinTable;
-import javax.persistence.ManyToMany;
-import javax.persistence.OneToMany;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
-import javax.persistence.Transient;
+import javax.persistence.*;
 import javax.validation.constraints.Email;
 import javax.validation.constraints.Max;
 import javax.validation.constraints.Min;
@@ -26,6 +12,7 @@ import javax.validation.constraints.Size;
 
 import org.hibernate.annotations.Cascade;
 import org.hibernate.annotations.CascadeType;
+import org.hibernate.annotations.SortNatural;
 import org.hibernate.validator.constraints.Length;
 import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.lang.Nullable;
@@ -101,12 +88,16 @@ public class Socio implements Serializable {
 	@Column(name = "soc_email")
 	private String socEmail;
 
+	@SortNatural
+	@OrderBy("act_nom ASC")
 	@ManyToMany(fetch = FetchType.LAZY)
 	@JoinTable(name = "activ_socio", joinColumns = @JoinColumn(name = "soc_id"), inverseJoinColumns = @JoinColumn(name = "act_id"))
 	@JsonIgnoreProperties(value = { "socios", "hibernateLazyInitializer", "handler" }, allowSetters = true)
 	@Cascade({ CascadeType.SAVE_UPDATE })
 	private Set<Actividade> actividades;
 
+	@SortNatural
+	@OrderBy("cota_anual ASC")
 	@OneToMany(mappedBy = "socio")
 	@JsonIgnoreProperties(value = { "cotas", "hibernateLazyInitializer", "handler" }, allowSetters = true)
 	private Set<Cota> cotas;

@@ -38,7 +38,7 @@ public class Cota implements Serializable {
 	private int cotaAnual;
 
 	@NotNull
-	@Min(15)
+	@Min(0)
 	@Max(15)
 	@Column(name = "cota_importe")
 	private int cotaImporte;

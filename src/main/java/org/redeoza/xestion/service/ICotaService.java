@@ -1,5 +1,9 @@
 package org.redeoza.xestion.service;
 
+import org.redeoza.xestion.model.Cota;
+
+import java.util.Set;
+
 /**
  * <b>ICotaService.java<b>
  * 
@@ -8,4 +12,8 @@ package org.redeoza.xestion.service;
  */
 public interface ICotaService {
 	int sumCotasByYear(int cotaAnual);
+
+	void saveCota(Cota cota);
+
+	void updateCotaActual(Set<Cota> cotas);
 }
