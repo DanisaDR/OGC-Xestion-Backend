@@ -1,10 +1,12 @@
 package org.redeoza.xestion.configuration;
 
 import org.redeoza.xestion.utils.UtilConstant;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.scheduling.annotation.SchedulingConfigurer;
 import org.springframework.scheduling.concurrent.ThreadPoolTaskScheduler;
 import org.springframework.scheduling.config.ScheduledTaskRegistrar;
 
+@Configuration
 public class ScheduledTaskConfig implements SchedulingConfigurer {
 
 	@Override
