@@ -11,6 +11,7 @@ import org.redeoza.xestion.exception.MissingFieldException;
 import org.redeoza.xestion.exception.NotFoundException;
 import org.redeoza.xestion.model.Socio;
 import org.redeoza.xestion.service.ISocioService;
+import org.redeoza.xestion.utils.ManipulationTransientField;
 import org.redeoza.xestion.utils.UtilConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.DefaultMessageSourceResolvable;
@@ -102,6 +103,10 @@ public class SocioController {
 
 		final Map<String, Object> response = new HashMap<>();
 
+		if(socio.getSocNomComp() == null) {
+			throw new MissingFieldException(UtilConstant.NOT_NOME_COMPLETO);
+		}
+
 		if (result.hasErrors()) {
 			final List<String> errors = result.getFieldErrors().stream().map(DefaultMessageSourceResolvable::getDefaultMessage)
 					.collect(Collectors.toList());
@@ -110,6 +115,7 @@ public class SocioController {
 		}
 
 		try {
+			socio.setSocAct(true);
 			socSrv.saveSoc(socio);
 
 			response.put(UtilConstant.MESSAGE,
@@ -148,11 +154,6 @@ public class SocioController {
 		}
 
 		try {
-			socUpdated.setSocNomComp(socio.getSocNomComp());
-			socUpdated.setSocEnder(socio.getSocEnder());
-			socUpdated.setSocPob(socio.getSocPob());
-			socUpdated.setSocCP(socio.getSocCP());
-			socUpdated.setSocTfnoFx(socio.getSocTfnoFx());
 
 			if(socio.getSocDataBaixa() == null) {
 				socUpdated.setSocAct(true);
@@ -160,8 +161,16 @@ public class SocioController {
 			} else {
 				socUpdated.setSocAct(false);
 				socUpdated.setSocDataBaixa(socio.getSocDataBaixa());
+				if (socio.getSocDataBaixa().before(socio.getSocDataAlta())) {
+					throw new MissingFieldException(UtilConstant.FAIL_LEAVING_IS_BEFORE);
+				}
 			}
 
+			socUpdated.setSocNomComp(socio.getSocNomComp());
+			socUpdated.setSocEnder(socio.getSocEnder());
+			socUpdated.setSocPob(socio.getSocPob());
+			socUpdated.setSocCP(socio.getSocCP());
+			socUpdated.setSocTfnoFx(socio.getSocTfnoFx());
 			socUpdated.setSocTfnoMb(socio.getSocTfnoMb());
 			socUpdated.setSocEmail(socio.getSocEmail());
 

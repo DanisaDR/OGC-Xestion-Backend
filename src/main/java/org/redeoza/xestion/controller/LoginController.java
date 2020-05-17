@@ -8,17 +8,14 @@ import org.redeoza.xestion.utils.UtilConstant;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
-import org.springframework.web.bind.annotation.CrossOrigin;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @CrossOrigin(origins = "*")
 public class LoginController {
 
 	@Autowired
-	private ILoginService loginSrv;
+	ILoginService loginSrv;
 
 	@GetMapping(value = "login-usuario/{usuID}")
 	public ResponseEntity<Login> loginByUser(@PathVariable int usuID) {
@@ -32,6 +29,15 @@ public class LoginController {
 			}
 
 			return new ResponseEntity<Login>(showLogin, HttpStatus.OK);
+		} catch (final Exception ex) {
+			throw new GenericException(ex.getMessage());
+		}
+	}
+
+	@PostMapping(value = "login/intento-sesion/{usuAlias}")
+	public int trySessionLogin(@PathVariable String usuAlias) {
+		try {
+			return loginSrv.attemptLogin(usuAlias);
 		} catch (final Exception ex) {
 			throw new GenericException(ex.getMessage());
 		}

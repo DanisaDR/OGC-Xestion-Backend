@@ -63,10 +63,10 @@ public class LoginServiceImp implements UserDetailsService, ILoginService {
 
 	@Override
 	@Transactional
-	public Integer attemptLogin(Integer usuID) {
+	public int attemptLogin(String usuAlias) {
 		int numAttempts = 0;
 
-		final Login login = getLoginById(usuID);
+		final Login login = loginDao.findByUsuAlias(usuAlias);
 
 		if (login.getUsuIntentos() > 0) {
 			numAttempts = login.getUsuIntentos() - 1;
