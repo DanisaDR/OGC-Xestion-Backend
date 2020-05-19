@@ -1,6 +1,10 @@
 package org.redeoza.xestion.utils;
 
 import javafx.beans.binding.Bindings;
+import org.springframework.web.util.UriBuilder;
+
+import java.net.URI;
+import java.util.function.Function;
 
 public class UtilConstant {
 
@@ -51,6 +55,12 @@ public class UtilConstant {
 	public static final String UPDATED_ACTIVIDADE = "A nova actividade queda actualizada co nome: ";
 	public static final String DELETE_ACTIVIDADE = "A actividade queda borrada físicamente do aplicativo. Non se pode volver a usar.";
 	public static final String NOT_FOUND_MONITOR = "Non ven cuberto o/a monitora/a";
+
+	// Implementación GeoAPI
+	public static final String URL_BASE_GEOAPI = "https://apiv1.geoapi.es/";
+	public static final String URL_KEY_API_JSON_GEOAPI = "&type=JSON&key=3732a0b22150bde3e59459a07995d034f2559bef776d5c7dac812f9fe7ff3af0&sandbox=0";
+	public static final String URL_PROVINCIA_CORUNHA_GEOAPI = "municipios?CPRO=15";
+	public static final String URL_ALL_MUNICIPIO_CORUNHA_GEOAPI = "poblaciones?CPRO=15&CMUM=";
 
 	// Varias
 	public static final String COMA = ", ";

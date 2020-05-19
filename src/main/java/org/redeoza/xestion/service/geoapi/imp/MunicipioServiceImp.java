@@ -5,14 +5,19 @@ import org.redeoza.xestion.dao.geoapi.IMunicipioDao;
 import org.redeoza.xestion.model.geoapi.Municipio;
 import org.redeoza.xestion.service.geoapi.IMunicipioService;
 import org.redeoza.xestion.utils.GeoAPIEntities;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.HashSet;
 import java.util.Set;
 
 @Service
 public class MunicipioServiceImp implements IMunicipioService {
+
+    private final Logger log = LoggerFactory.getLogger(MunicipioServiceImp.class);
 
     @Autowired
     IMunicipioDao munDao;
@@ -28,15 +33,13 @@ public class MunicipioServiceImp implements IMunicipioService {
     }
 
     @Override
-    public void checkAllMunWithGeoAPI(Set<GeoAPIEntities> lstGeoAPI) {
+    public void checkMunsWithGeoAPI(Set<GeoAPIEntities> lstGeoAPI) {
 
         Set<Municipio> setGeoApiMun = new HashSet<>();
 
         for(GeoAPIEntities geoAPI : lstGeoAPI) {
             Municipio munBBDD = new Municipio();
             munBBDD.setCmum(geoAPI.getCmum());
-            munBBDD.setCpro(geoAPI.getCpro());
-            munBBDD.setCun(geoAPI.getCun());
             munBBDD.setDmun50(geoAPI.getDmun50());
             setGeoApiMun.add(munBBDD);
         }
@@ -45,6 +48,7 @@ public class MunicipioServiceImp implements IMunicipioService {
             Sets.SetView<Municipio> dev = Sets.difference(setGeoApiMun, getAllMunicipios());
             for(Municipio rst : dev) {
                 this.saveMun(rst);
+                log.info("Faise a insercción do seguinte Mun {}", rst);
             }
         }
     }

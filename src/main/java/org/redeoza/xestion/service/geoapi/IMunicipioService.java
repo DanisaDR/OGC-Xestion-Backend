@@ -11,5 +11,5 @@ public interface IMunicipioService {
 
     void saveMun(Municipio municipio);
 
-    void checkAllMunWithGeoAPI(Set<GeoAPIEntities> lstGeoAPI);
+    void checkMunsWithGeoAPI(Set<GeoAPIEntities> lstGeoAPI);
 }
