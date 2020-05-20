@@ -2,8 +2,8 @@ package org.redeoza.xestion.service.geoapi.imp;
 
 import com.google.common.collect.Sets;
 import org.redeoza.xestion.dao.geoapi.IPoboacionDao;
-import org.redeoza.xestion.model.geoapi.Municipio;
 import org.redeoza.xestion.model.geoapi.Poboacion;
+import org.redeoza.xestion.service.geoapi.IMunicipioService;
 import org.redeoza.xestion.service.geoapi.IPoboacionService;
 import org.redeoza.xestion.utils.GeoAPIEntities;
 import org.slf4j.Logger;
@@ -12,6 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.HashSet;
+import java.util.Optional;
 import java.util.Set;
 
 @Service
@@ -21,6 +22,9 @@ public class PoboacionServiceImp implements IPoboacionService {
 
     @Autowired
     IPoboacionDao pobDao;
+
+    @Autowired
+    IMunicipioService munSrv;
 
     @Override
     public Set<Poboacion> getAllPobs() {
@@ -33,6 +37,11 @@ public class PoboacionServiceImp implements IPoboacionService {
     }
 
     @Override
+    public Set<Poboacion> findListPobByMun(String cmum) {
+        return munSrv.findByMun(cmum).getPoboacions();
+    }
+
+    @Override
     public void checkPobsWithGeoAPI(Set<GeoAPIEntities> lstGeoAPI) {
         Set<Poboacion> setGeoApiPob = new HashSet<>();
 
@@ -40,14 +49,21 @@ public class PoboacionServiceImp implements IPoboacionService {
             Poboacion pobBBDD = new Poboacion();
             pobBBDD.setCun(geoAPI.getCun());
             pobBBDD.setNentsi50(geoAPI.getNentsi50());
+            pobBBDD.setMunicipio(munSrv.findByMun(geoAPI.getCmum()));
             setGeoApiPob.add(pobBBDD);
         }
 
-        if (setGeoApiPob.size() > getAllPobs().size()) {
-            Sets.SetView<Poboacion> dev = Sets.difference(setGeoApiPob, this.getAllPobs());
-            for(Poboacion rst : dev) {
-                this.savePob(rst);
-                log.info("Faise a insercción do seguinte Pob: {}", rst);
+        Optional<GeoAPIEntities> opt = lstGeoAPI.stream().findFirst();
+
+        if(opt.isPresent()) {
+            Set<Poboacion> getPobsByMun = this.findListPobByMun(opt.get().getCmum());
+
+            if (setGeoApiPob.size() > getPobsByMun.size()) {
+                Sets.SetView<Poboacion> dev = Sets.difference(setGeoApiPob, getPobsByMun);
+                for(Poboacion rst : dev) {
+                    this.savePob(rst);
+                    log.info("Faise a insercción do seguinte Pob: {}", rst);
+                }
             }
         }
     }

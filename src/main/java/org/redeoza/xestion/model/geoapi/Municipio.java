@@ -1,8 +1,11 @@
 package org.redeoza.xestion.model.geoapi;
 
+import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+
 import javax.persistence.*;
 import javax.validation.constraints.NotEmpty;
 import java.io.Serializable;
+import java.util.Set;
 
 @Entity
 @Table(name = "municipio",
@@ -19,6 +22,10 @@ public class Municipio implements Serializable {
     @Column(name = "dmun50")
     private String dmun50;
 
+    @OneToMany(mappedBy = "municipio", fetch = FetchType.EAGER)
+    @JsonIgnoreProperties(value = { "poboacion", "hibernateLazyInitializer", "handler" }, allowSetters = true)
+    private Set<Poboacion> poboacions;
+
     public String getCmum() {
         return cmum;
     }
@@ -33,5 +40,13 @@ public class Municipio implements Serializable {
 
     public void setDmun50(String dmun50) {
         this.dmun50 = dmun50;
+    }
+
+    public Set<Poboacion> getPoboacions() {
+        return poboacions;
+    }
+
+    public void setPoboacions(Set<Poboacion> poboacions) {
+        this.poboacions = poboacions;
     }
 }

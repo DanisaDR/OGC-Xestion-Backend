@@ -11,5 +11,7 @@ public interface IPoboacionService {
 
     void savePob(Poboacion poboacion);
 
+    Set<Poboacion> findListPobByMun(String cmum);
+
     void checkPobsWithGeoAPI(Set<GeoAPIEntities> lstGeoAPI);
 }

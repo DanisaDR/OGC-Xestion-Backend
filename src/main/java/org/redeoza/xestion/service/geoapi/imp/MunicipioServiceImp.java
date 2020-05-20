@@ -33,6 +33,11 @@ public class MunicipioServiceImp implements IMunicipioService {
     }
 
     @Override
+    public Municipio findByMun(String cmum) {
+        return munDao.findByStringIdMun(cmum);
+    }
+
+    @Override
     public void checkMunsWithGeoAPI(Set<GeoAPIEntities> lstGeoAPI) {
 
         Set<Municipio> setGeoApiMun = new HashSet<>();

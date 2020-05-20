@@ -7,6 +7,8 @@ import java.util.Set;
 
 public interface IMunicipioService {
 
+    Municipio findByMun(String cmun);
+
     Set<Municipio> getAllMunicipios();
 
     void saveMun(Municipio municipio);
