@@ -14,6 +14,8 @@ import java.util.Set;
 )
 public class Municipio implements Serializable {
 
+    private static final long serialVersionUID = 1L;
+
     @Id
     @Column(name = "cmum")
     private String cmum;
@@ -23,8 +25,12 @@ public class Municipio implements Serializable {
     private String dmun50;
 
     @OneToMany(mappedBy = "municipio", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties(value = { "poboacion", "hibernateLazyInitializer", "handler" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "poboacions", "hibernateLazyInitializer", "handler" }, allowSetters = true)
     private Set<Poboacion> poboacions;
+
+    @Version
+    @Column(name = "version")
+    private long version;
 
     public String getCmum() {
         return cmum;

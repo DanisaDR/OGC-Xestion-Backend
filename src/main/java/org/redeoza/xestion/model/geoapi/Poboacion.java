@@ -1,13 +1,16 @@
 package org.redeoza.xestion.model.geoapi;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
-import java.util.Set;
+import java.io.Serializable;
 
 @Entity
 @Table(name = "poboacion")
-public class Poboacion {
+public class Poboacion implements Serializable {
+
+    private static final long serialVersionUID = 1L;
 
     @Id
     @Column(name = "cun")
@@ -16,10 +19,15 @@ public class Poboacion {
     @Column(name = "nentsi50")
     private String nentsi50;
 
+    @MapsId
     @ManyToOne
-    @JoinColumn(name="cmum")
+    @JoinColumn(name = "cmum")
     @JsonIgnoreProperties(value = { "municipio", "hibernateLazyInitializer", "handler" }, allowSetters = true)
     private Municipio municipio;
+
+    @Version
+    @Column(name = "version")
+    private long version;
 
     public String getCun() {
         return cun;

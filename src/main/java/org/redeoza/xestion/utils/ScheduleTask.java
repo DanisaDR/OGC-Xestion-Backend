@@ -24,14 +24,14 @@ public class ScheduleTask {
     private static final DateTimeFormatter realTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
     @Autowired
-    IMunicipioService provSrv;
+    IMunicipioService munSrv;
 
     @Autowired
     IPoboacionService pobSrv;
 
-    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "* * 10 * * ?")
     void scheduleMunGeoAPI() {
-        log.info("Tarefa GeoApi Municipio :: Tempo Execucción - {}", realTime.format(LocalDateTime.now()));
+        log.info("Tarefa GeoApi Municipio :: Tempo Comezo - {}", realTime.format(LocalDateTime.now()));
         WebClient clientGeoAPI = WebClient.create(UtilConstant.URL_BASE_GEOAPI);
 
         Mono<GeoAPI> response = clientGeoAPI.get().uri(
@@ -40,15 +40,18 @@ public class ScheduleTask {
 
         Set<GeoAPIEntities> lstGeoAPI = new HashSet<>(Objects.requireNonNull(response.map(GeoAPI::getEntitiesList).block()));
 
-        provSrv.checkMunsWithGeoAPI(lstGeoAPI);
+        munSrv.checkMunsWithGeoAPI(lstGeoAPI);
+
+        log.info("Tarefa GeoApi Municipio :: Tempo Remate - {}", realTime.format(LocalDateTime.now()));
     }
 
     @Scheduled(cron = "0 * * * * ?")
     void schedulePobGeoAPI() {
-        log.info("Tarefa GeoApi Poboación :: Tempo Execucción - {}", realTime.format(LocalDateTime.now()));
+        log.info("Tarefa GeoApi Poboación :: Tempo Comezo - {}", realTime.format(LocalDateTime.now()));
         WebClient clientGeoAPI = WebClient.create(UtilConstant.URL_BASE_GEOAPI);
 
-        for(Municipio mun : provSrv.getAllMunicipios()) {
+        for(Municipio mun : munSrv.getAllMunicipios()) {
+
             Mono<GeoAPI> response = clientGeoAPI.get().uri(
                     UtilConstant.URL_ALL_MUNICIPIO_CORUNHA_GEOAPI + mun.getCmum()
                        + UtilConstant.URL_KEY_API_JSON_GEOAPI
@@ -56,6 +59,10 @@ public class ScheduleTask {
             Set<GeoAPIEntities> lstGeoAPI = new HashSet<>(Objects.requireNonNull(response.map(GeoAPI::getEntitiesList).block()));
 
             pobSrv.checkPobsWithGeoAPI(lstGeoAPI);
+
+            lstGeoAPI.clear();
         }
+
+        log.info("Tarefa GeoApi Poboación :: Tempo Remate - {}", realTime.format(LocalDateTime.now()));
     }
 }

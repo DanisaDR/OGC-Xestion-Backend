@@ -7,11 +7,7 @@ import java.util.Set;
 
 public interface IPoboacionService {
 
-    Set<Poboacion> getAllPobs();
-
-    void savePob(Poboacion poboacion);
-
-    Set<Poboacion> findListPobByMun(String cmum);
-
+    void savePob(Set<Poboacion> poboaciones);
+    
     void checkPobsWithGeoAPI(Set<GeoAPIEntities> lstGeoAPI);
 }
