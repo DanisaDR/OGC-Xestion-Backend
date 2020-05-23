@@ -25,7 +25,7 @@ public class Municipio implements Serializable {
     private String dmun50;
 
     @OneToMany(mappedBy = "municipio", fetch = FetchType.EAGER)
-    @JsonIgnoreProperties(value = { "poboacions", "hibernateLazyInitializer", "handler" }, allowSetters = true)
+    @JsonIgnoreProperties(value = { "municipio", "hibernateLazyInitializer", "handler" }, allowSetters = true)
     private Set<Poboacion> poboacions;
 
     @Version

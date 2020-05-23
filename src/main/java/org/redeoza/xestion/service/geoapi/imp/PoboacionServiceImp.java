@@ -17,7 +17,6 @@ import java.util.HashSet;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicReference;
-import java.util.stream.Collectors;
 
 @Service
 public class PoboacionServiceImp implements IPoboacionService {
@@ -32,6 +31,11 @@ public class PoboacionServiceImp implements IPoboacionService {
 
     @Autowired
     IMunicipioService munSrv;
+
+    @Override
+    public Set<Poboacion> getAllPobs() {
+        return new HashSet<>(pobDao.findAll());
+    }
 
     @Override
     public void savePob(Set<Poboacion> pobs) {

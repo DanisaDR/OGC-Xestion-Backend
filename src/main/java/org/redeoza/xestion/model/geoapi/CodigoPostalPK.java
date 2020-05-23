@@ -1,22 +1,22 @@
 package org.redeoza.xestion.model.geoapi;
 
-import java.io.Serializable;
-
-public class PoboacionPK implements Serializable {
+public class CodigoPostalPK {
 
     private static final long serialVersionUID = 1L;
 
     private String cun;
     private String cmum;
+    private String cpos;
 
-    public PoboacionPK() {
+    public CodigoPostalPK() {
 
     }
 
-    public PoboacionPK(String cun, String cmum) {
+    public CodigoPostalPK(String cun, String cmum, String cpos) {
         super();
         this.cun = cun;
         this.cmum = cmum;
+        this.cpos = cpos;
     }
 
     public String getCun() {
@@ -33,5 +33,13 @@ public class PoboacionPK implements Serializable {
 
     public void setCmum(String cmum) {
         this.cmum = cmum;
+    }
+
+    public String getCpos() {
+        return cpos;
+    }
+
+    public void setCpos(String cpos) {
+        this.cpos = cpos;
     }
 }

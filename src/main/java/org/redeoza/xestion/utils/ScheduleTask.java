@@ -16,6 +16,8 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.*;
 
+import static org.apache.maven.shared.utils.StringUtils.concatenate;
+
 @Component
 public class ScheduleTask {
 
@@ -29,9 +31,13 @@ public class ScheduleTask {
     @Autowired
     IPoboacionService pobSrv;
 
-    @Scheduled(cron = "* * 10 * * ?")
+    @Scheduled(cron = "0 0 0 1 1/1 *")
     void scheduleMunGeoAPI() {
-        log.info("Tarefa GeoApi Municipio :: Tempo Comezo - {}", realTime.format(LocalDateTime.now()));
+
+        if(log.isInfoEnabled()) {
+            log.info("Tarefa GeoApi Municipio :: Tempo Comezo: {}", realTime.format(LocalDateTime.now()));
+        }
+
         WebClient clientGeoAPI = WebClient.create(UtilConstant.URL_BASE_GEOAPI);
 
         Mono<GeoAPI> response = clientGeoAPI.get().uri(
@@ -42,12 +48,18 @@ public class ScheduleTask {
 
         munSrv.checkMunsWithGeoAPI(lstGeoAPI);
 
-        log.info("Tarefa GeoApi Municipio :: Tempo Remate - {}", realTime.format(LocalDateTime.now()));
+        if(log.isInfoEnabled()) {
+            log.info("Tarefa GeoApi Municipio :: Tempo Remate: {}", realTime.format(LocalDateTime.now()));
+        }
     }
 
-    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "0 0 0 1 1/1 *")
     void schedulePobGeoAPI() {
-        log.info("Tarefa GeoApi Poboación :: Tempo Comezo - {}", realTime.format(LocalDateTime.now()));
+
+        if(log.isInfoEnabled()) {
+            log.info("Tarefa GeoApi Poboacións :: Tempo Comezo: {}", realTime.format(LocalDateTime.now()));
+        }
+
         WebClient clientGeoAPI = WebClient.create(UtilConstant.URL_BASE_GEOAPI);
 
         for(Municipio mun : munSrv.getAllMunicipios()) {
@@ -63,6 +75,30 @@ public class ScheduleTask {
             lstGeoAPI.clear();
         }
 
-        log.info("Tarefa GeoApi Poboación :: Tempo Remate - {}", realTime.format(LocalDateTime.now()));
+        if(log.isInfoEnabled()) {
+            log.info("Tarefa GeoApi Poboacións :: Tempo Remate: {} ", realTime.format(LocalDateTime.now()));
+        }
+    }
+
+    @Scheduled(cron = "0 0 0 1 1/1 *")
+    void scheduleCPGeoAPI() {
+
+        if(log.isInfoEnabled()) {
+            log.info("Tarefa GeoApi Códigos Postais :: Tempo Comezo: {}", realTime.format(LocalDateTime.now()));
+        }
+
+        WebClient clientGeoAPI = WebClient.create(UtilConstant.URL_BASE_GEOAPI);
+        for(Poboacion pob : pobSrv.getAllPobs()) {
+
+            Mono<GeoAPI> response = clientGeoAPI.get().uri(
+                    UtilConstant.URL_ALL_MUNICIPIO_CORUNHA_GEOAPI + pob.getCmum()
+                            + UtilConstant.URL_KEY_API_JSON_GEOAPI
+            ).retrieve().bodyToMono(GeoAPI.class);
+            Set<GeoAPIEntities> lstGeoAPI = new HashSet<>(Objects.requireNonNull(response.map(GeoAPI::getEntitiesList).block()));
+        }
+
+        if(log.isInfoEnabled()) {
+            log.info("Tarefa GeoApi Códigos Postais :: Tempo Remate: {}", realTime.format(LocalDateTime.now()));
+        }
     }
 }
