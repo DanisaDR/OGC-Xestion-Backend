@@ -1,33 +1,38 @@
 package org.redeoza.xestion.model.geoapi;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.io.Serializable;
 
 @Entity
 @Table(name = "codigo_postal")
-@IdClass(value = CodigoPostalPK.class)
-public class CodigoPostal implements Serializable {
+public class CodigoPostal implements Serializable, Persistable<CodigoPostalPK> {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "cun")
-    private String cun;
+    @EmbeddedId
+    CodigoPostalPK codigoPostalPK;
 
-    @Id
-    @Column(name = "cmum")
-    private String cmum;
+    @Transient
+    private boolean isNew;
 
-    @Id
-    @Column(name = "cpos")
-    private String cpos;
+    public CodigoPostal() {
 
-    @MapsId
-    @ManyToOne
-    @JoinColumn(name = "cun", referencedColumnName = "cun")
-    @JoinColumn(name = "cmum", referencedColumnName = "cmum")
+    }
+
+    public CodigoPostal(CodigoPostalPK codigoPostalPK, boolean isNew) {
+        this.codigoPostalPK = codigoPostalPK;
+        this.isNew = isNew;
+    }
+
+    @MapsId("poboacion")
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumns({
+        @JoinColumn(name = "cmum", insertable=false, updatable=false),
+        @JoinColumn(name = "cun", insertable=false, updatable=false)
+    })
     @JsonIgnoreProperties(value = { "codigoPostals", "hibernateLazyInitializer", "handler" }, allowSetters = true)
     private Poboacion poboacion;
 
@@ -35,35 +40,29 @@ public class CodigoPostal implements Serializable {
     @Column(name = "version")
     private long version;
 
-    public String getCun() {
-        return cun;
-    }
-
-    public void setCun(String cun) {
-        this.cun = cun;
-    }
-
-    public String getCmum() {
-        return cmum;
-    }
-
-    public void setCmum(String cmum) {
-        this.cmum = cmum;
-    }
-
-    public String getCpos() {
-        return cpos;
-    }
-
-    public void setCpos(String cpos) {
-        this.cpos = cpos;
-    }
-
     public Poboacion getPoboacion() {
         return poboacion;
     }
 
     public void setPoboacion(Poboacion poboacion) {
         this.poboacion = poboacion;
+    }
+
+    @Override
+    public CodigoPostalPK getId() {
+        return codigoPostalPK;
+    }
+
+    @Override
+    public boolean isNew() {
+        return true;
+    }
+
+    public CodigoPostalPK getCodigoPostalPK() {
+        return codigoPostalPK;
+    }
+
+    public void setCodigoPostalPK(CodigoPostalPK codigoPostalPK) {
+        this.codigoPostalPK = codigoPostalPK;
     }
 }

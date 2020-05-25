@@ -2,11 +2,13 @@ package org.redeoza.xestion.utils;
 
 import org.redeoza.xestion.model.geoapi.Municipio;
 import org.redeoza.xestion.model.geoapi.Poboacion;
+import org.redeoza.xestion.service.geoapi.ICodigoPostalService;
 import org.redeoza.xestion.service.geoapi.IMunicipioService;
 import org.redeoza.xestion.service.geoapi.IPoboacionService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Component;
 import org.springframework.web.reactive.function.client.WebClient;
@@ -31,7 +33,13 @@ public class ScheduleTask {
     @Autowired
     IPoboacionService pobSrv;
 
-    @Scheduled(cron = "0 0 0 1 1/1 *")
+    @Autowired
+    ICodigoPostalService cpSrv;
+
+    @Autowired
+    JdbcTemplate template;
+
+    @Scheduled(cron = "0 * * * * ?")
     void scheduleMunGeoAPI() {
 
         if(log.isInfoEnabled()) {
@@ -53,7 +61,8 @@ public class ScheduleTask {
         }
     }
 
-    @Scheduled(cron = "0 0 0 1 1/1 *")
+    // 0 0 0 1 1/1 *
+    @Scheduled(cron = "1 * * * * ?")
     void schedulePobGeoAPI() {
 
         if(log.isInfoEnabled()) {
@@ -80,7 +89,7 @@ public class ScheduleTask {
         }
     }
 
-    @Scheduled(cron = "0 0 0 1 1/1 *")
+    @Scheduled(cron = "0 * * * * ?")
     void scheduleCPGeoAPI() {
 
         if(log.isInfoEnabled()) {
@@ -91,10 +100,13 @@ public class ScheduleTask {
         for(Poboacion pob : pobSrv.getAllPobs()) {
 
             Mono<GeoAPI> response = clientGeoAPI.get().uri(
-                    UtilConstant.URL_ALL_MUNICIPIO_CORUNHA_GEOAPI + pob.getCmum()
+                    UtilConstant.URL_MUNICIPIO_CORUNHA_GEOAPI + pob.getPoboacionPK().getCmum()
+                            + UtilConstant.URL_POBOACION_MUN_GEOAPI + pob.getPoboacionPK().getCun()
                             + UtilConstant.URL_KEY_API_JSON_GEOAPI
             ).retrieve().bodyToMono(GeoAPI.class);
             Set<GeoAPIEntities> lstGeoAPI = new HashSet<>(Objects.requireNonNull(response.map(GeoAPI::getEntitiesList).block()));
+
+            cpSrv.checkCPsWithGeoAPI(lstGeoAPI);
         }
 
         if(log.isInfoEnabled()) {

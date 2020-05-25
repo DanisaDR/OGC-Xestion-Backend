@@ -4,12 +4,14 @@ import com.google.common.collect.Sets;
 import org.redeoza.xestion.dao.geoapi.IPoboacionDao;
 import org.redeoza.xestion.model.geoapi.Municipio;
 import org.redeoza.xestion.model.geoapi.Poboacion;
+import org.redeoza.xestion.model.geoapi.PoboacionPK;
 import org.redeoza.xestion.service.geoapi.IMunicipioService;
 import org.redeoza.xestion.service.geoapi.IPoboacionService;
 import org.redeoza.xestion.utils.GeoAPIEntities;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.domain.Sort;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Service;
 
@@ -24,9 +26,6 @@ public class PoboacionServiceImp implements IPoboacionService {
     private final Logger log = LoggerFactory.getLogger(PoboacionServiceImp.class);
 
     @Autowired
-    JdbcTemplate template;
-
-    @Autowired
     IPoboacionDao pobDao;
 
     @Autowired
@@ -34,7 +33,12 @@ public class PoboacionServiceImp implements IPoboacionService {
 
     @Override
     public Set<Poboacion> getAllPobs() {
-        return new HashSet<>(pobDao.findAll());
+        return new HashSet<>(pobDao.findAll(Sort.by(Sort.Direction.DESC, "nentsi50")));
+    }
+
+    @Override
+    public Poboacion findPobByCmumAndCun(String cmum, String cun) {
+        return pobDao.findPobByCmumAndCun(cmum, cun);
     }
 
     @Override
@@ -49,8 +53,11 @@ public class PoboacionServiceImp implements IPoboacionService {
         AtomicReference<Municipio> munDDBB = new AtomicReference<>(new Municipio());
 
         for(GeoAPIEntities geoAPI : lstGeoAPI) {
+            PoboacionPK pk = new PoboacionPK();
+            pk.setCmum(geoAPI.getCmum());
+            pk.setCun(geoAPI.getCun());
             Poboacion pobBBDD = new Poboacion();
-            pobBBDD.setCun(geoAPI.getCun());
+            pobBBDD.setPoboacionPK(pk);
             pobBBDD.setNentsi50(geoAPI.getNentsi50());
             pobBBDD.setMunicipio(munSrv.findByMun(geoAPI.getCmum()));
             setGeoApiPob.add(pobBBDD);
@@ -63,8 +70,8 @@ public class PoboacionServiceImp implements IPoboacionService {
         if (lstGeoAPI.size() > munDDBB.get().getPoboacions().size()) {
             Sets.SetView<Poboacion> dev = Sets.difference(setGeoApiPob, munDDBB.get().getPoboacions());
             for (Poboacion rst : dev) {
-                template.update("INSERT INTO Poboacion (cmum, nentsi50, cun) VALUES (?, ?, ?)",
-                        rst.getMunicipio().getCmum(), rst.getNentsi50(), rst.getCun());
+                rst.isNew();
+                pobDao.save(rst);
                 log.debug("Insertamos a POB: {} en el Municipio: {} ", rst.getNentsi50(), rst.getMunicipio().getDmun50());
             }
         }

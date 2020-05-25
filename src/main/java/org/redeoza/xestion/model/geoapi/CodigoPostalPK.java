@@ -1,6 +1,8 @@
 package org.redeoza.xestion.model.geoapi;
 
-public class CodigoPostalPK {
+import java.io.Serializable;
+
+public class CodigoPostalPK implements Serializable {
 
     private static final long serialVersionUID = 1L;
 

@@ -61,6 +61,8 @@ public class UtilConstant {
 	public static final String URL_KEY_API_JSON_GEOAPI = "&type=JSON&key=3732a0b22150bde3e59459a07995d034f2559bef776d5c7dac812f9fe7ff3af0&sandbox=0";
 	public static final String URL_PROVINCIA_CORUNHA_GEOAPI = "municipios?CPRO=15";
 	public static final String URL_ALL_MUNICIPIO_CORUNHA_GEOAPI = "poblaciones?CPRO=15&CMUM=";
+	public static final String URL_MUNICIPIO_CORUNHA_GEOAPI = "cps?CPRO=15&CMUM=";
+	public static final String URL_POBOACION_MUN_GEOAPI = "&CUN=";
 
 	// Varias
 	public static final String COMA = ", ";

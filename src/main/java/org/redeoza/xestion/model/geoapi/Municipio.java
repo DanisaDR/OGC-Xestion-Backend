@@ -8,10 +8,7 @@ import java.io.Serializable;
 import java.util.Set;
 
 @Entity
-@Table(name = "municipio",
-        uniqueConstraints =
-        @UniqueConstraint(columnNames = {"dmun50", "cmum"})
-)
+@Table(name = "municipio")
 public class Municipio implements Serializable {
 
     private static final long serialVersionUID = 1L;

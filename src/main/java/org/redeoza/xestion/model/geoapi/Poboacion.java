@@ -1,6 +1,7 @@
 package org.redeoza.xestion.model.geoapi;
 
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
+import org.springframework.data.domain.Persistable;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -8,29 +9,26 @@ import java.util.Set;
 
 @Entity
 @Table(name = "poboacion")
-@IdClass(value = PoboacionPK.class)
-public class Poboacion implements Serializable {
+public class Poboacion implements Serializable, Persistable<PoboacionPK> {
 
     private static final long serialVersionUID = 1L;
 
-    @Id
-    @Column(name = "cun")
-    private String cun;
-
-    @Id
-    @Column(name = "cmum")
-    private String cmum;
+    @EmbeddedId
+    PoboacionPK poboacionPK;
 
     @Column(name = "nentsi50")
     private String nentsi50;
 
-    @MapsId
+    @Transient
+    private boolean isNew = true;
+
+    @MapsId("municipio")
     @ManyToOne
-    @JoinColumn(name = "cmum")
+    @JoinColumn(name = "cmum", insertable=false, updatable=false)
     @JsonIgnoreProperties(value = { "poboacions", "hibernateLazyInitializer", "handler" }, allowSetters = true)
     private Municipio municipio;
 
-    @OneToMany(mappedBy = "codigo_postal", fetch = FetchType.EAGER)
+    @OneToMany(mappedBy = "poboacion", fetch = FetchType.EAGER)
     @JsonIgnoreProperties(value = { "poboacion", "hibernateLazyInitializer", "handler" }, allowSetters = true)
     private Set<CodigoPostal> codigoPostals;
 
@@ -38,20 +36,21 @@ public class Poboacion implements Serializable {
     @Column(name = "version")
     private long version;
 
-    public String getCmum() {
-        return cmum;
+    public Poboacion(PoboacionPK poboacionPK, boolean isNew) {
+        this.poboacionPK = poboacionPK;
+        this.isNew = isNew;
     }
 
-    public void setCmum(String cmum) {
-        this.cmum = cmum;
+    public Poboacion() {
+
     }
 
-    public String getCun() {
-        return cun;
+    public PoboacionPK getPoboacionPK() {
+        return poboacionPK;
     }
 
-    public void setCun(String cun) {
-        this.cun = cun;
+    public void setPoboacionPK(PoboacionPK poboacionPK) {
+        this.poboacionPK = poboacionPK;
     }
 
     public String getNentsi50() {
@@ -76,5 +75,15 @@ public class Poboacion implements Serializable {
 
     public void setCodigoPostals(Set<CodigoPostal> codigoPostals) {
         this.codigoPostals = codigoPostals;
+    }
+
+    @Override
+    public PoboacionPK getId() {
+        return poboacionPK;
+    }
+
+    @Override
+    public boolean isNew() {
+        return true;
     }
 }

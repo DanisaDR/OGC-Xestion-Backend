@@ -9,7 +9,9 @@ public interface IPoboacionService {
 
     Set<Poboacion> getAllPobs();
 
-    void savePob(Set<Poboacion> poboaciones);
+    Poboacion findPobByCmumAndCun(String cmum, String cun);
+
+    void savePob(Set<Poboacion> poboacions);
     
     void checkPobsWithGeoAPI(Set<GeoAPIEntities> lstGeoAPI);
 }
