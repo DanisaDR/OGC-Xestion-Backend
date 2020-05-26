@@ -8,7 +8,9 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDate;
+import java.util.ArrayList;
 import java.util.Set;
+import java.util.stream.Collectors;
 
 @Service
 public class CotaServiceImp implements ICotaService {
@@ -24,8 +26,21 @@ public class CotaServiceImp implements ICotaService {
 
 	@Override
 	@Transactional
+	public Set<Cota> updateCotasBySoc(Set<Cota> cotas) {
+		cotas.forEach(this::saveCota);
+		return cotas;
+	}
+
+	@Override
+	@Transactional
 	public void saveCota(Cota cota) {
 		cotaDao.save(cota);
+	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public Set<Cota> allCotasBySoc(int socID) {
+		return cotaDao.allCotasBySoc(socID);
 	}
 
 	@Override
