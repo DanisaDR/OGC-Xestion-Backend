@@ -72,7 +72,6 @@ public class ScheduleTask {
         WebClient clientGeoAPI = WebClient.create(UtilConstant.URL_BASE_GEOAPI);
 
         for(Municipio mun : munSrv.getAllMunicipios()) {
-
             Mono<GeoAPI> response = clientGeoAPI.get().uri(
                     UtilConstant.URL_ALL_MUNICIPIO_CORUNHA_GEOAPI + mun.getCmum()
                        + UtilConstant.URL_KEY_API_JSON_GEOAPI
