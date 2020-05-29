@@ -29,4 +29,7 @@ public interface ISocioDao extends JpaRepository<Socio, Integer> {
 
 	@Query("select s from Socio s where s.socEmail like %:socEmail%")
 	Socio findBySocEmail(@Param("socEmail") String socEmail);
+
+	@Query(value = "select top 1 soc_id from Socio order by soc_id desc", nativeQuery = true)
+	int findLastSoc();
 }

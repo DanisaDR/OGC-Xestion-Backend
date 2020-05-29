@@ -122,8 +122,18 @@ public class SocioController {
 
 		try {
 			socio.setSocAct(true);
-			socio.getCotas().forEach(c -> cotaSrv.saveCota(c));
+
+			Set<Cota> ctsUpdate = socio.getCotas();
+			socio.setCotas(new HashSet<>());
+
 			socSrv.saveSoc(socio);
+
+            for(Cota c : ctsUpdate) {
+                c.setSocID(socSrv.findLastSoc());
+                c.setCotaID(c.getCotaAnual() + (10000 * socSrv.findLastSoc()));
+                c.setSocio(socio);
+                cotaSrv.saveCota(c);
+            }
 
 			response.put(UtilConstant.MESSAGE,
 					UtilConstant.NEW_SOCIO.concat(socio.getSocNomComp()).concat(UtilConstant.CREATED));

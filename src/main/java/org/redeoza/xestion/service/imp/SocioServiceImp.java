@@ -93,4 +93,10 @@ public class SocioServiceImp implements ISocioService {
 	public boolean existsEmailSoc(String socEmail, int socID) {
 		return socDao.findBySocEmail(socEmail) != null && (socID == 0 || socDao.findBySocEmail(socEmail).getSocID() != socID);
 	}
+
+	@Override
+	@Transactional(readOnly = true)
+	public int findLastSoc() {
+		return socDao.findLastSoc();
+	}
 }

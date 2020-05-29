@@ -26,7 +26,7 @@ public class ScheduleTask {
     private static final DateTimeFormatter realTime = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm:ss");
 
 
-    @Scheduled(cron = "0 * * * * ?")
+    @Scheduled(cron = "0 0 0 1 1/1 ?")
     void scheduleTaskGeoAPI() {
         log.info("Cron Task :: Execution Time - {}", realTime.format(LocalDateTime.now()));
         WebClient clientGeoAPI = WebClient.create("https://apiv1.geoapi.es/");

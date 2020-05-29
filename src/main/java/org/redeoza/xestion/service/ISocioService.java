@@ -24,4 +24,6 @@ public interface ISocioService {
 	boolean existsTfnoMbSoc(String tfnoMb, int socID);
 
 	boolean existsEmailSoc(String socEmail, int socID);
+
+	int findLastSoc();
 }
