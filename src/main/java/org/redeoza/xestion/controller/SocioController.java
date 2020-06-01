@@ -1,5 +1,6 @@
 package org.redeoza.xestion.controller;
 
+import java.time.LocalDate;
 import java.util.*;
 import java.util.stream.Collectors;
 
@@ -9,7 +10,9 @@ import org.apache.commons.lang.StringUtils;
 import org.redeoza.xestion.exception.GenericException;
 import org.redeoza.xestion.exception.MissingFieldException;
 import org.redeoza.xestion.exception.NotFoundException;
+import org.redeoza.xestion.model.Cota;
 import org.redeoza.xestion.model.Socio;
+import org.redeoza.xestion.service.ICotaService;
 import org.redeoza.xestion.service.ISocioService;
 import org.redeoza.xestion.utils.ManipulationTransientField;
 import org.redeoza.xestion.utils.UtilConstant;
@@ -37,7 +40,10 @@ import org.springframework.web.bind.annotation.RestController;
 public class SocioController {
 
 	@Autowired
-	private ISocioService socSrv;
+	ISocioService socSrv;
+
+	@Autowired
+	ICotaService cotaSrv;
 
 	@Secured({ "ROLE_ADMIN", "ROLE_DIRECTIVA", "ROLE_MONITOR" })
 	@PreAuthorize("hasPermission('hasAccess', 'TODOS_PERMISOS') or hasPermission('hasAccess', 'VER_SOCIOS')")
@@ -116,7 +122,18 @@ public class SocioController {
 
 		try {
 			socio.setSocAct(true);
+
+			Set<Cota> ctsUpdate = socio.getCotas();
+			socio.setCotas(new HashSet<>());
+
 			socSrv.saveSoc(socio);
+
+            for(Cota c : ctsUpdate) {
+                c.setSocID(socSrv.findLastSoc());
+                c.setCotaID(c.getCotaAnual() + (10000 * socSrv.findLastSoc()));
+                c.setSocio(socio);
+                cotaSrv.saveCota(c);
+            }
 
 			response.put(UtilConstant.MESSAGE,
 					UtilConstant.NEW_SOCIO.concat(socio.getSocNomComp()).concat(UtilConstant.CREATED));
@@ -173,6 +190,8 @@ public class SocioController {
 			socUpdated.setSocTfnoFx(socio.getSocTfnoFx());
 			socUpdated.setSocTfnoMb(socio.getSocTfnoMb());
 			socUpdated.setSocEmail(socio.getSocEmail());
+
+			cotaSrv.updateCotaActual(socio.getCotas());
 
 			socUpdated.setCotas(socio.getCotas());
 			socUpdated.setActividades(socio.getActividades());
