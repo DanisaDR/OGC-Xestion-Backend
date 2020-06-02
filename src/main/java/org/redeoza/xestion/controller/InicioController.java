@@ -1,10 +1,10 @@
 package org.redeoza.xestion.controller;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.*;
 
 import org.redeoza.xestion.service.ICotaService;
 import org.redeoza.xestion.service.ISocioService;
+import org.redeoza.xestion.utils.BlogueRRSS;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -14,6 +14,8 @@ import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.reactive.function.client.WebClient;
+import reactor.core.publisher.Mono;
 
 @RestController
 @CrossOrigin(origins = "*")
@@ -52,5 +54,15 @@ public class InicioController {
 		response.put("soc-acts", socSrv.socActNoActs(socAct));
 
 		return new ResponseEntity<Map<String, Object>>(response, HttpStatus.OK);
+	}
+
+	@GetMapping("blogue-rrss")
+	public ResponseEntity<List<BlogueRRSS>> getRRSSBlogue() {
+		WebClient clientRRSSBlogue = WebClient.create("http://www.redeoza.org");
+		Mono<BlogueRRSS[]> respRedeoza = clientRRSSBlogue.get().uri("/rrss/blogue").retrieve().bodyToMono(BlogueRRSS[].class);
+		BlogueRRSS[] rst = respRedeoza.block();
+
+		assert rst != null;
+		return new ResponseEntity<List<BlogueRRSS>>(new ArrayList<BlogueRRSS>(Arrays.asList(rst)), HttpStatus.OK);
 	}
 }
