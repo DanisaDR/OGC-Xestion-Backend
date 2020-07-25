@@ -63,6 +63,6 @@ public class InicioController {
 		BlogueRRSS[] rst = respRedeoza.block();
 
 		assert rst != null;
-		return new ResponseEntity<List<BlogueRRSS>>(new ArrayList<BlogueRRSS>(Arrays.asList(rst)), HttpStatus.OK);
+		return new ResponseEntity<>(new ArrayList<>(Arrays.asList(rst)), HttpStatus.OK);
 	}
 }
